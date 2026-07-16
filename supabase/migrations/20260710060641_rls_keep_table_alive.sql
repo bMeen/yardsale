@@ -1,0 +1,1 @@
+alter table keepalive_test enable row level security;

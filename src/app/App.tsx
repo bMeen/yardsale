@@ -1,7 +1,12 @@
-import Hero from "../home/Hero";
+import QueryProvider from "./QueryProvider";
+import Router from "./Routes";
 
 function App() {
-  return <Hero />;
+  return (
+    <QueryProvider>
+      <Router />
+    </QueryProvider>
+  );
 }
 
 export default App;

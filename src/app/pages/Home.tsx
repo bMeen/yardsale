@@ -1,7 +1,7 @@
-import BackgroundGlow from "./BackgroundGlow";
-import Cards from "./Cards";
-import ConfettiLayer from "./ConfettiLayer";
-import Headline from "./Headline";
+import BackgroundGlow from "../../home/BackgroundGlow";
+import Cards from "../../home/Cards";
+import ConfettiLayer from "../../home/ConfettiLayer";
+import Headline from "../../home/Headline";
 
 function Hero() {
   return (

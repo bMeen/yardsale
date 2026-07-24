@@ -13,7 +13,7 @@ function Headline() {
       transition={{ duration: 0.7 }}
     >
       <div className="flex items-center justify-center">
-        <Logo />
+        <Logo className="md:text-5xl lg:text-6xl" />
       </div>
       <motion.div
         initial={{ opacity: 0, y: 8 }}

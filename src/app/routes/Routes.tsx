@@ -1,18 +1,18 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 
-import Hero from "./pages/Home";
-import Login from "./pages/Login";
-import NotFound from "./pages/NotFound";
-import UserLayout from "./layouts/UserLayout";
-import Discover from "./pages/user/Discover";
-import Auctions from "./pages/user/auctions/Auctions";
-import Auction from "./pages/user/auctions/Auction";
-import Create from "./pages/user/auctions/Create";
-import Edit from "./pages/user/auctions/Edit";
-import Notifications from "./pages/user/activity/Notifications";
-import Watchlists from "./pages/user/activity/Watchlists";
-import Profile from "./pages/user/profile/Profile";
-import Transactions from "./pages/user/profile/Transactions";
+import Hero from "../pages/Home";
+import Login from "../pages/Login";
+import NotFound from "../pages/NotFound";
+import UserLayout from "../layouts/UserLayout";
+import Discover from "../pages/user/Discover";
+import Auctions from "../pages/user/auctions/Auctions";
+import Auction from "../pages/user/auctions/Auction";
+import Create from "../pages/user/auctions/Create";
+import Edit from "../pages/user/auctions/Edit";
+import Notifications from "../pages/user/activity/Notifications";
+import Watchlists from "../pages/user/activity/Watchlists";
+import Profile from "../pages/user/profile/Profile";
+import Transactions from "../pages/user/profile/Transactions";
 
 function Router() {
   return (

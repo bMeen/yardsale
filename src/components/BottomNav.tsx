@@ -1,4 +1,4 @@
-import { NAVIGATIONS } from "@/lib/constants";
+import { NAVIGATIONS } from "@/shared/constants";
 import { Plus } from "lucide-react";
 import { NavLink } from "react-router";
 

@@ -1,10 +1,16 @@
+import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
-import { Wallet } from "lucide-react";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useLogout } from "@/features/auth/hooks/useLogout";
+import { Loader2, LogOut, Wallet } from "lucide-react";
 
 function Header() {
   const hour = new Date().getHours();
   const greeting =
     hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+
+  const { isPending, logout } = useLogout();
+  const { user } = useCurrentUser();
 
   return (
     <div className="bg-background/95 border-border sticky top-0 z-20 border-b px-2 py-3.5 backdrop-blur-sm">
@@ -12,7 +18,7 @@ function Header() {
         <div>
           <p className="text-muted-foreground text-xs">{greeting}</p>
           <p className="font-display text-xl leading-tight font-bold">
-            Al-Ameen
+            {user?.profile.full_name}
           </p>
         </div>
         <div className="flex items-center gap-2.5">
@@ -23,7 +29,18 @@ function Header() {
             </span>
           </div>
 
-          <UserAvatar url="https://github.com/shadcn.png" />
+          <UserAvatar
+            url={user?.profile.avatar_url || ""}
+            fallback={user?.profile.full_name[0]}
+          />
+          <Button
+            onClick={() => logout()}
+            type="button"
+            variant="ghost"
+            className="hover:cursour-pointer"
+          >
+            {isPending ? <Loader2 /> : <LogOut />}
+          </Button>
         </div>
       </div>
     </div>

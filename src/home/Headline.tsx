@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RotatingWords from "./RotatingWords";
 import Logo from "@/components/Logo";
+import { googleSignIn } from "@/features/auth/apiAuth";
 
 function Headline() {
   return (
@@ -37,9 +37,15 @@ function Headline() {
       </p>
       <Button
         size="sm"
-        className="shadow-foreground/10 h-14 px-9 text-base font-semibold shadow-xl"
+        className="shadow-foreground/10 h-14 gap-2 px-9 text-base font-semibold shadow-xl"
+        onClick={() => googleSignIn()}
       >
-        Get started <ArrowRight className="ml-2 h-4 w-4" />
+        Get started with Google
+        <img
+          className="h-5 w-5"
+          src="https://authjs.dev/img/providers/google.svg"
+          alt="Google logo"
+        />
       </Button>
     </motion.div>
   );

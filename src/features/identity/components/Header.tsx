@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { formatAmount } from "@/lib/utils";
 import { Loader2, LogOut, Wallet } from "lucide-react";
 
 function Header() {
@@ -25,7 +26,7 @@ function Header() {
           <div className="flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-amber-700">
             <Wallet size={13} />
             <span className="font-mono text-xs font-semibold md:text-sm">
-              1,000,000
+              {formatAmount(1000000)}
             </span>
           </div>
 

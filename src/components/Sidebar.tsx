@@ -2,6 +2,7 @@ import { NAVIGATIONS } from "@/shared/constants";
 import Logo from "./Logo";
 import { NavLink } from "react-router";
 import { Plus } from "lucide-react";
+import { formatAmount } from "@/lib/utils";
 
 const unreadCount = 5;
 
@@ -56,7 +57,10 @@ function Sidebar() {
           <p className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
             Available Balance
           </p>
-          <p className="mt-0.5 font-mono text-lg font-bold">{"1,000,000"}</p>
+          <p className="mt-0.5 font-mono text-lg font-bold">
+            {" "}
+            {formatAmount(1000000)}
+          </p>
         </div>
       </div>
     </aside>

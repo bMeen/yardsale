@@ -31,6 +31,7 @@ function Categories() {
     <div className="flex scrollbar-none gap-3 overflow-x-auto">
       {CATEGORIES.map((category) => (
         <Badge
+          key={category}
           variant={currentCategory === category ? "default" : "secondary"}
           className="capitalize hover:cursor-pointer md:h-8 md:px-4 md:py-2 md:text-sm"
           onClick={() => handleSetCategory(category)}

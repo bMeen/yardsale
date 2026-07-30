@@ -1,8 +1,8 @@
-import FeaturedCard from "./FeaturedCard";
-import FeaturedAuctionCardSkeleton from "./FeaturedCardSkeleton";
-import { useFeaturedAuctions } from "../hooks/useFeaturedAuctions";
 import EmptyState from "@/components/EmptyState";
 import { Package } from "lucide-react";
+import FeaturedAuctionCardSkeleton from "./FeaturedCardSkeleton";
+import { useFeaturedAuctions } from "../../hooks/useFeaturedAuctions";
+import FeaturedCard from "./FeaturedCard";
 
 function Featured() {
   const { isLoading, featuredAuctions } = useFeaturedAuctions();

@@ -1,7 +1,7 @@
 import { formatAmount, getImageUrl } from "@/lib/utils";
-import type { FullAuction } from "../types";
 import { Clock } from "lucide-react";
 import { formatTimeLeft } from "@/lib/utils";
+import type { FullAuction } from "../../types";
 
 function FeaturedCard({ auction }: { auction: FullAuction }) {
   const { label, urgent } = formatTimeLeft(new Date(auction.ends_at));
@@ -27,7 +27,7 @@ function FeaturedCard({ auction }: { auction: FullAuction }) {
         <div className="mt-2 flex items-end justify-between">
           <div>
             <p className="text-[10px] tracking-wide text-white/50 uppercase">
-              {auction?.current_price > 0 ? "Current bid" : "Starting"}
+              {auction?.bid_count > 0 ? "Current bid" : "Starting"}
             </p>
             <p className="font-mono text-xl font-bold text-white">
               {formatAmount(
@@ -52,7 +52,7 @@ function FeaturedCard({ auction }: { auction: FullAuction }) {
       </div>
       <div className="absolute top-3 right-3 rounded-full bg-black/40 px-2 py-0.5 backdrop-blur-sm">
         <span className="text-xs font-medium text-white">
-          {auction?.bids?.length} bids
+          {auction?.bid_count} bids
         </span>
       </div>
     </div>

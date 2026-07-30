@@ -33,7 +33,7 @@ function Sidebar() {
       <ul className="flex-1 scrollbar-none space-y-1 overflow-y-auto p-4">
         {sideItems.map((item) => {
           return (
-            <NavLink to={item.href} className="block">
+            <NavLink to={item.href} className="block" key={item.id}>
               {({ isActive }) => (
                 <li
                   className={`relative flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${isActive ? "bg-primary/10 text-primary font-semibold" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}

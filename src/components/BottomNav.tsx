@@ -11,7 +11,7 @@ function BottomNav() {
         {NAVIGATIONS.map((item) => {
           if (item.id === "create")
             return (
-              <NavLink to={item.href}>
+              <NavLink to={item.href} key={item.id}>
                 {({ isActive }) => (
                   <li
                     key="create"
@@ -23,10 +23,9 @@ function BottomNav() {
               </NavLink>
             );
           return (
-            <NavLink to={item.href}>
+            <NavLink to={item.href} key={item.id}>
               {({ isActive }) => (
                 <li
-                  key={item.id}
                   className={`relative flex flex-col items-center gap-0.5 transition-colors ${
                     isActive ? "text-primary" : "text-muted-foreground"
                   }`}

@@ -27,7 +27,7 @@ function AuctionCard({
 
   if (compact)
     return (
-      <div className="bg-card border-border flex cursor-pointer gap-3 rounded-2xl border p-3 transition-shadow hover:shadow-md">
+      <div className="bg-card flex cursor-pointer gap-3 rounded-2xl p-3 transition-shadow hover:shadow-sm">
         <div className="bg-muted h-20 w-20 shrink-0 overflow-hidden rounded-xl">
           {imgSrc && (
             <img
@@ -62,7 +62,7 @@ function AuctionCard({
             </div>
             <div className="text-right">
               <p className="text-muted-foreground text-xs">
-                {auction.bids.length} bids
+                {auction.bid_count} bids
               </p>
               {/* {auction.status === "Active" && (
                 <CountdownTimer endsAt={auction.endsAt} />
@@ -85,7 +85,7 @@ function AuctionCard({
     );
 
   return (
-    <div className="bg-card border-border group cursor-pointer overflow-hidden rounded-2xl border transition-all duration-200 hover:shadow-lg">
+    <div className="bg-card group cursor-pointer overflow-hidden rounded-2xl transition-all duration-200 hover:shadow-sm">
       <div className="bg-muted relative h-50 overflow-hidden">
         {imgSrc && (
           <img
@@ -125,7 +125,7 @@ function AuctionCard({
               {formatAmount(displayBid)}
             </p>
             <p className="text-muted-foreground text-[10px]">
-              {auction.bids.length} bids
+              {auction.bid_count} bids
             </p>
           </div>
           <Button variant="link">View</Button>

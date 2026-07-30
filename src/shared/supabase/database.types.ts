@@ -126,6 +126,7 @@ export type Database = {
       }
       auctions: {
         Row: {
+          bid_count: number
           category: Database["public"]["Enums"]["auction_category"]
           created_at: string
           current_price: number
@@ -144,6 +145,7 @@ export type Database = {
           winner_id: string | null
         }
         Insert: {
+          bid_count?: number
           category: Database["public"]["Enums"]["auction_category"]
           created_at?: string
           current_price: number
@@ -162,6 +164,7 @@ export type Database = {
           winner_id?: string | null
         }
         Update: {
+          bid_count?: number
           category?: Database["public"]["Enums"]["auction_category"]
           created_at?: string
           current_price?: number
@@ -576,6 +579,18 @@ export type Database = {
       }
       format_naira: { Args: { p_amount_kobo: number }; Returns: string }
       get_admin_dashboard_stats: { Args: never; Returns: Json }
+      get_participating_auctions: {
+        Args: {
+          p_category?: Database["public"]["Enums"]["auction_category"]
+          p_limit?: number
+          p_page?: number
+          p_search?: string
+        }
+        Returns: {
+          auction: Json
+          total_count: number
+        }[]
+      }
       get_platform_account_id: { Args: never; Returns: string }
       get_system_account_id: { Args: never; Returns: string }
       get_wallet_summary: { Args: never; Returns: Json }
@@ -591,6 +606,7 @@ export type Database = {
       lock_auction: {
         Args: { p_auction_id: string }
         Returns: {
+          bid_count: number
           category: Database["public"]["Enums"]["auction_category"]
           created_at: string
           current_price: number

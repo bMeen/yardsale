@@ -1,8 +1,9 @@
+import PageContainer from "@/components/PageContainer";
 import Title from "@/components/Title";
 import { Button } from "@/components/ui/button";
-import Auctions from "@/features/auction/components/Auctions";
+import DiscoverAuctions from "@/features/auction/components/discover/DiscoverAuctions";
 import Categories from "@/features/auction/components/Categories";
-import Featured from "@/features/auction/components/Featured";
+import Featured from "@/features/auction/components/discover/Featured";
 import Header from "@/features/identity/components/Header";
 import { ChevronRight } from "lucide-react";
 import { useSearchParams } from "react-router";
@@ -12,7 +13,7 @@ function Discover() {
   const currentCategory = searchParams.get("category") || "All";
 
   return (
-    <div className="flex-1 scrollbar-none space-y-3 overflow-y-auto pb-20">
+    <PageContainer className="space-y-3">
       <Header />
 
       <section className="space-y-3">
@@ -42,9 +43,9 @@ function Discover() {
             : currentCategory.replace("_", " ")}
         </Title>
 
-        <Auctions />
+        <DiscoverAuctions />
       </section>
-    </div>
+    </PageContainer>
   );
 }
 

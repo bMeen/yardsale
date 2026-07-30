@@ -1,3 +1,4 @@
+import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
@@ -14,11 +15,13 @@ function Header() {
   const { user } = useCurrentUser();
 
   return (
-    <div className="bg-background/95 border-border sticky top-0 z-20 border-b px-2 py-3.5 backdrop-blur-sm">
+    <PageHeader className="px-2 py-3.5">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-muted-foreground text-xs">{greeting}</p>
-          <p className="font-display text-xl leading-tight font-bold">
+          <p className="text-muted-foreground text-sm md:text-base">
+            {greeting}
+          </p>
+          <p className="font-display text-lg leading-tight font-bold md:text-xl">
             {user?.profile.full_name}
           </p>
         </div>
@@ -44,7 +47,7 @@ function Header() {
           </Button>
         </div>
       </div>
-    </div>
+    </PageHeader>
   );
 }
 

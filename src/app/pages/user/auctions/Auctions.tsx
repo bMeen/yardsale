@@ -1,6 +1,6 @@
 import PageContainer from "@/components/PageContainer";
 import PageHeader from "@/components/PageHeader";
-import NavigationTabs from "@/components/NavigationTabs";
+import AuctionTabs from "@/features/auction/components/auctions/AuctionTabs";
 import Title from "@/components/Title";
 import Categories from "@/features/auction/components/Categories";
 import { AUCTIONTABS } from "@/shared/constants";
@@ -29,7 +29,7 @@ function Auctions() {
           <Categories />
         </div>
       </PageHeader>
-      <NavigationTabs tabs={AUCTIONTABS} />
+      <AuctionTabs tabs={AUCTIONTABS} />
 
       <AuctionList />
     </PageContainer>

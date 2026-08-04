@@ -1,39 +1,65 @@
-import { useDebounce } from "@/shared/hooks/useDebounce";
-import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useDebouncedCallback } from "use-debounce";
+import { Search, X } from "lucide-react";
 import { useSearchParams } from "react-router";
+import { useState, type ChangeEvent } from "react";
 
 function SearchInput() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const intialValue = searchParams.get("search") || "";
+  const [search, setSearch] = useState(searchParams.get("search") ?? "");
 
-  const [search, setSearch] = useState(intialValue);
-  const debouncedSearch = useDebounce(search, 500);
+  const handleSearch = useDebouncedCallback((query: string) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.delete("page");
 
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams);
+      if (query.trim()) {
+        params.set("search", query.trim());
+      } else {
+        params.delete("search");
+      }
 
-    if (debouncedSearch.trim()) {
-      params.set("search", debouncedSearch.trim());
-    } else {
+      return params;
+    });
+  }, 500);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+    handleSearch(value);
+  };
+
+  const clearSearch = () => {
+    setSearch("");
+    handleSearch.cancel();
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
       params.delete("search");
-    }
-
-    params.delete("page");
-
-    setSearchParams(params);
-  }, [debouncedSearch, searchParams, setSearchParams]);
+      params.delete("page");
+      return params;
+    });
+  };
 
   return (
-    <div className="bg-muted flex h-8 items-center gap-2 rounded-xl border border-transparent px-3 transition-colors focus-within:bg-white">
+    <div className="bg-muted flex h-9 items-center gap-2 rounded-xl border border-transparent pr-0.5 pl-3 transition-colors focus-within:bg-white">
       <Search size={15} className="text-muted-foreground shrink-0" />
       <input
         type="text"
         placeholder="Search by title…"
         className="flex-1 bg-transparent text-sm outline-none"
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={handleChange}
       />
+      {searchParams.get("search") && (
+        <Button
+          variant="ghost"
+          className="cursor-pointer"
+          size="icon-sm"
+          onClick={clearSearch}
+        >
+          <X size={15} className="text-muted-foreground" />
+        </Button>
+      )}
     </div>
   );
 }

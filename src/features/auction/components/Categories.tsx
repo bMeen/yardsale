@@ -19,12 +19,18 @@ const CATEGORIES: Category[] = [
 
 function Categories() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentCategory = searchParams.get("category") || "All";
+  const currentCategory = searchParams.get("category") || "ALL";
 
   function handleSetCategory(value: string) {
-    searchParams.set("category", value);
-    if (searchParams.get("page")) searchParams.set("page", "1");
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set("category", value);
+    } else {
+      params.delete("category");
+    }
+
+    params.delete("page");
+    setSearchParams(params);
   }
 
   return (

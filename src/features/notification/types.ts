@@ -1,0 +1,22 @@
+import type { Database } from "@/shared/supabase/database.types";
+
+export const NotificationType = {
+  AUCTION_STARTED: "AUCTION_STARTED",
+  AUCTION_ENDED: "AUCTION_ENDED",
+  OUTBID: "OUTBID",
+  BID_CANCELLED: "BID_CANCELLED",
+  AUCTION_WON: "AUCTION_WON",
+  AUCTION_LOST: "AUCTION_LOST",
+  PAYMENT_RECEIVED: "PAYMENT_RECEIVED",
+  WALLET_RESET: "WALLET_RESET",
+  AUCTION_ENDING_SOON: "AUCTION_ENDING_SOON",
+  ADMIN_CANCELLED_AUCTION: "ADMIN_CANCELLED_AUCTION",
+  ACCOUNT_SUSPENDED: "ACCOUNT_SUSPENDED",
+  ACCOUNT_REACTIVATED: "ACCOUNT_REACTIVATED",
+  ACCOUNT_DEACTIVATED: "ACCOUNT_DEACTIVATED",
+} as const;
+
+export type NotificationType =
+  (typeof NotificationType)[keyof typeof NotificationType];
+
+export type Notification = Database["public"]["Tables"]["notifications"]["Row"];

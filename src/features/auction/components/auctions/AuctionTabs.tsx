@@ -1,15 +1,22 @@
-import { Button } from "./ui/button";
+import { Button } from "../../../../components/ui/button";
 import { useSearchParams } from "react-router";
 
-function NavigationTabs<T extends string>({ tabs }: { tabs: T[] }) {
+function AuctionTabs<T extends string>({ tabs }: { tabs: T[] }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const active = searchParams.get("type") || "ALL";
 
   function handleSetTab(value: T) {
-    searchParams.set("type", value);
-    if (searchParams.get("page")) searchParams.set("page", "1");
-    if (searchParams.get("category")) searchParams.set("category", "ALL");
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams);
+
+    if (value) {
+      params.set("type", value);
+    } else {
+      params.delete("type");
+    }
+    params.delete("page");
+    params.delete("category");
+
+    setSearchParams(params);
   }
 
   return (
@@ -28,4 +35,4 @@ function NavigationTabs<T extends string>({ tabs }: { tabs: T[] }) {
   );
 }
 
-export default NavigationTabs;
+export default AuctionTabs;

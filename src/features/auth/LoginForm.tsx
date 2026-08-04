@@ -22,7 +22,7 @@ function LoginForm() {
     defaultValues: {
       /*  email: "",
       password: "", */
-      email: "seed_john@yardsale.dev",
+      email: "seed_u01@yardsale.dev",
       password: "YardSaleSeed!2026",
     },
     resolver: zodResolver(schema),

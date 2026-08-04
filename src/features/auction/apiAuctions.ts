@@ -6,6 +6,7 @@ import type {
   GetAuctionsResponse,
 } from "./types";
 import { getCurrentUserApi } from "../auth/apiAuth";
+import { getRange } from "@/lib/utils";
 
 const AUCTION_FULL_QUERY = `*, auction_images(storage_path, display_order), highest_bid:bids!fk_auctions_highest_bid(
       id,
@@ -52,8 +53,7 @@ export async function getAuctions({
     };
   }
 
-  const from = (page - 1) * PER_PAGE;
-  const to = from + PER_PAGE - 1;
+  const { from, to } = getRange(page);
 
   let query = supabase.from("auctions").select(AUCTION_FULL_QUERY, {
     count: "exact",

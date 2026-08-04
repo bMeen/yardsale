@@ -10,6 +10,7 @@ import Hero from "../pages/Home";
 import Login from "../pages/auth/Login";
 import Callback from "../pages/auth/Callback";
 import NotFound from "../pages/NotFound";
+import ActivityLayout from "../layouts/ActivityLayout";
 
 const Discover = lazy(() => import("../pages/user/Discover"));
 const Auctions = lazy(() => import("../pages/user/auctions/Auctions"));
@@ -43,7 +44,7 @@ function Router() {
               <Route path="create" element={<Create />} />
               <Route path=":auctionId/edit" element={<Edit />} />
             </Route>
-            <Route path="activity">
+            <Route path="activity" element={<ActivityLayout />}>
               <Route index element={<Notifications />} />
               <Route path="watchlists" element={<Watchlists />} />
             </Route>

@@ -23,7 +23,7 @@ function Discover() {
           <Button
             variant="link"
             size="sm"
-            className="gap-0.5 text-xs font-semibold md:text-base"
+            className="cursor-pointer text-xs md:text-sm"
           >
             See all <ChevronRight size={13} />
           </Button>

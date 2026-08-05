@@ -39,11 +39,12 @@ export const AUCTIONTABS: AuctionListType[] = [
   "ALL",
   "PARTICIPATING",
   "MY_AUCTIONS",
+  "WATCHLIST",
 ];
 
 export const ACTIVITYNAVIGATIONS = [
   { label: "Notification", href: ".", end: true },
-  { label: "Watchlist", href: "watchlists" },
+  { label: "Transactions", href: "transactions" },
 ];
 
 type NotificationConfig = {

@@ -585,6 +585,7 @@ export type Database = {
           p_limit?: number
           p_page?: number
           p_search?: string
+          p_status?: Database["public"]["Enums"]["auction_status"]
         }
         Returns: {
           auction: Json
@@ -594,6 +595,19 @@ export type Database = {
       get_platform_account_id: { Args: never; Returns: string }
       get_system_account_id: { Args: never; Returns: string }
       get_wallet_summary: { Args: never; Returns: Json }
+      get_watchlist_auctions: {
+        Args: {
+          p_category?: Database["public"]["Enums"]["auction_category"]
+          p_limit?: number
+          p_page?: number
+          p_search?: string
+          p_status?: Database["public"]["Enums"]["auction_status"]
+        }
+        Returns: {
+          auction: Json
+          total_count: number
+        }[]
+      }
       is_admin: { Args: never; Returns: boolean }
       is_profile_admin: { Args: { p_profile_id: string }; Returns: boolean }
       list_stale_temp_uploads: {

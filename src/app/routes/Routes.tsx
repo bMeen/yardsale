@@ -20,9 +20,8 @@ const Edit = lazy(() => import("../pages/user/auctions/Edit"));
 const Notifications = lazy(
   () => import("../pages/user/activity/Notifications"),
 );
-const Watchlists = lazy(() => import("../pages/user/activity/Watchlists"));
 const Profile = lazy(() => import("../pages/user/profile/Profile"));
-const Transactions = lazy(() => import("../pages/user/profile/Transactions"));
+const Transactions = lazy(() => import("../pages/user/activity/Transactions"));
 
 function Router() {
   return (
@@ -38,26 +37,28 @@ function Router() {
             }
           >
             <Route path="discover" element={<Discover />} />
+
             <Route path="auctions">
               <Route index element={<Auctions />} />
               <Route path=":auctionId" element={<Auction />} />
               <Route path="create" element={<Create />} />
               <Route path=":auctionId/edit" element={<Edit />} />
             </Route>
+
             <Route path="activity" element={<ActivityLayout />}>
               <Route index element={<Notifications />} />
-              <Route path="watchlists" element={<Watchlists />} />
-            </Route>
-            <Route path="profile">
-              <Route index element={<Profile />} />
               <Route path="transactions" element={<Transactions />} />
             </Route>
+
+            <Route path="profile" element={<Profile />} />
           </Route>
+
           <Route path="auth" element={<AuthLayout />}>
             <Route index element={<Navigate replace to="login" />} />
             <Route path="login" element={<Login />} />
             <Route path="callback" element={<Callback />} />
           </Route>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

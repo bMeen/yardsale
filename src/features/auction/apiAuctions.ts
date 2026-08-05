@@ -1,9 +1,11 @@
 import { PER_PAGE } from "@/shared/constants";
 import supabase from "@/shared/supabase/client";
 import type {
+  AuctionListType,
   FullAuction,
   GetAuctionsParams,
   GetAuctionsResponse,
+  RPC,
 } from "./types";
 import { getCurrentUserApi } from "../auth/apiAuth";
 import { getRange } from "@/lib/utils";
@@ -27,16 +29,24 @@ export async function getFeaturedAuctions() {
   return data as FullAuction[];
 }
 
+type rpcType = Exclude<AuctionListType, "MY_AUCTIONS" | "ALL">;
+const RPC_BY_TYPE: Partial<Record<rpcType, RPC>> = {
+  PARTICIPATING: "get_participating_auctions",
+  WATCHLIST: "get_watchlist_auctions",
+};
+
 export async function getAuctions({
   type,
   page = 1,
   category = "ALL",
+  status,
   search,
 }: GetAuctionsParams): Promise<GetAuctionsResponse> {
   const trimmedSearch = search?.trim() || undefined;
 
-  if (type === "PARTICIPATING") {
-    const { data, error } = await supabase.rpc("get_participating_auctions", {
+  const rpcName = RPC_BY_TYPE[type as rpcType];
+  if (rpcName) {
+    const { data, error } = await supabase.rpc(rpcName, {
       p_category: category !== "ALL" ? category : undefined,
       p_search: trimmedSearch ?? undefined,
       p_page: page,
@@ -61,6 +71,10 @@ export async function getAuctions({
 
   if (category && category !== "ALL") {
     query = query.eq("category", category);
+  }
+
+  if (status) {
+    query = query.eq("status", status);
   }
 
   if (trimmedSearch) {

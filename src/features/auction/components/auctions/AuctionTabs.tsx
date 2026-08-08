@@ -15,18 +15,20 @@ function AuctionTabs<T extends string>({ tabs }: { tabs: T[] }) {
     }
     params.delete("page");
     params.delete("category");
+    params.delete("status");
 
     setSearchParams(params);
   }
 
   return (
-    <div className="mx-2 my-2 flex gap-1 rounded-xl bg-white p-1 md:mx-auto md:w-[80%]">
+    <div className="mx-2 my-4 flex rounded-xl bg-white p-1 md:mx-auto md:w-[80%]">
       {tabs.map((tab) => (
         <Button
           key={tab}
           onClick={() => handleSetTab(tab)}
+          size="sm"
           variant={active === tab ? "default" : "ghost"}
-          className={`flex-1 cursor-pointer text-xs md:text-sm ${active === tab ? "hover:bg-primary" : "hover:bg-transparent"}`}
+          className={`flex-1 cursor-pointer text-[10px] md:text-sm ${active === tab ? "hover:bg-primary" : "hover:bg-transparent"}`}
         >
           {tab.replace("_", " ")}
         </Button>

@@ -7,7 +7,6 @@ import type {
   GetAuctionsResponse,
   RPC,
 } from "./types";
-import { getCurrentUserApi } from "../auth/apiAuth";
 import { getRange } from "@/lib/utils";
 
 const AUCTION_FULL_QUERY = `*, auction_images(storage_path, display_order), highest_bid:bids!fk_auctions_highest_bid(
@@ -41,6 +40,7 @@ export async function getAuctions({
   category = "ALL",
   status,
   search,
+  user_id,
 }: GetAuctionsParams): Promise<GetAuctionsResponse> {
   const trimmedSearch = search?.trim() || undefined;
 
@@ -51,6 +51,7 @@ export async function getAuctions({
       p_search: trimmedSearch ?? undefined,
       p_page: page,
       p_limit: PER_PAGE,
+      p_status: status,
     });
 
     if (error) throw new Error(error.message);
@@ -75,6 +76,8 @@ export async function getAuctions({
 
   if (status) {
     query = query.eq("status", status);
+  } else {
+    query = query.neq("status", "CANCELLED");
   }
 
   if (trimmedSearch) {
@@ -82,10 +85,9 @@ export async function getAuctions({
   }
 
   if (type === "MY_AUCTIONS") {
-    const user = await getCurrentUserApi();
-    if (!user) throw new Error("Not authenticated");
+    if (!user_id) throw new Error("Not authenticated");
 
-    query = query.eq("seller_id", user.id);
+    query = query.eq("seller_id", user_id);
   }
 
   const { data, error, count } = await query

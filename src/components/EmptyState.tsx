@@ -16,7 +16,7 @@ function EmptyState({
   description: string;
 }) {
   return (
-    <Empty className="border border-dashed">
+    <Empty className="m-2 border border-dashed">
       <EmptyHeader>
         <EmptyMedia variant="default">{icon}</EmptyMedia>
         <EmptyTitle className="md:text-base">{title}</EmptyTitle>

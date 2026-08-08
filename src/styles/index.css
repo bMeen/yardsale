@@ -38,6 +38,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-success: var(--success);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
@@ -80,6 +81,7 @@
   --accent: #e8a010;
   --accent-foreground: #1a1208;
   --destructive: #d4183d;
+  --success: #009689;
   --destructive-foreground: #ffffff;
   --border: rgba(26, 18, 8, 0.1);
   --input: transparent;

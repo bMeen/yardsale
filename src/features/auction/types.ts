@@ -21,6 +21,7 @@ export interface GetAuctionsParams {
   category?: Category;
   status?: AuctionStatus;
   search?: string;
+  user_id?: string;
 }
 
 export type GetAuctionsResponse = {

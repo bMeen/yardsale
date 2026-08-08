@@ -594,6 +594,19 @@ export type Database = {
       }
       get_platform_account_id: { Args: never; Returns: string }
       get_system_account_id: { Args: never; Returns: string }
+      get_wallet_activity: {
+        Args: { p_limit?: number; p_page?: number }
+        Returns: {
+          amount: number
+          created_at: string
+          description: string
+          direction: string
+          entry_type: Database["public"]["Enums"]["wallet_entry_type"]
+          id: string
+          reference_type: Database["public"]["Enums"]["reference_type"]
+          total_count: number
+        }[]
+      }
       get_wallet_summary: { Args: never; Returns: Json }
       get_watchlist_auctions: {
         Args: {

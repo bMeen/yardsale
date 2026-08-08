@@ -69,7 +69,7 @@ export function getImageUrl(path: string) {
     .publicUrl;
 }
 
-export function formatNotificationTime(date: Date): string {
+export function formatTime(date: Date): string {
   const ms = Date.now() - date.getTime();
   const m = Math.floor(ms / MINUTE);
   const h = Math.floor(ms / HOUR);

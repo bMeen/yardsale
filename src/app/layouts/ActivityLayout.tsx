@@ -3,9 +3,11 @@ import PageContainer from "@/components/PageContainer";
 import PageHeader from "@/components/PageHeader";
 import Title from "@/components/Title";
 import { Button } from "@/components/ui/button";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
 function ActivityLayout() {
+  const location = useLocation();
+
   return (
     <PageContainer>
       <PageHeader>
@@ -13,12 +15,14 @@ function ActivityLayout() {
           <div className="flex items-center justify-between">
             <Title>Activity</Title>
 
-            <Button
-              variant="link"
-              className="cursor-pointer text-xs md:text-sm"
-            >
-              Mark all read
-            </Button>
+            {location.pathname === "/activity" && (
+              <Button
+                variant="link"
+                className="cursor-pointer text-xs md:text-sm"
+              >
+                Mark all read
+              </Button>
+            )}
           </div>
 
           <ActivityNavigations />

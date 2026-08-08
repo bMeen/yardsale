@@ -3,6 +3,7 @@ import Logo from "./Logo";
 import { NavLink } from "react-router";
 import { Plus } from "lucide-react";
 import { formatAmount } from "@/lib/utils";
+import UnreadCount from "./UnreadCount";
 
 const unreadCount = 5;
 
@@ -41,9 +42,7 @@ function Sidebar() {
                   <item.icon size={17} strokeWidth={isActive ? 2.5 : 1.5} />
                   {item.label}
                   {item.id === "activity" && unreadCount > 0 && (
-                    <span className="bg-primary text-primary-foreground ml-auto flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold">
-                      {unreadCount}
-                    </span>
+                    <UnreadCount className="bg-primary text-primary-foreground ml-auto" />
                   )}
                 </li>
               )}

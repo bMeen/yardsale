@@ -1,12 +1,19 @@
+import { Modal } from "@/components/custom-modal/Modal";
+import CustomPagination from "@/components/CustomPagination";
 import EmptyState from "@/components/EmptyState";
+import FullNotification from "@/features/notification/components/FullNotification";
 import NotificationCard from "@/features/notification/components/NotificationCard";
 import NotificationCardSkeleton from "@/features/notification/components/NotificationCardSkeleton";
 import { useNotifications } from "@/features/notification/hooks/useNotifications";
-import { groupNotifications } from "@/lib/utils";
+import { getPagination, groupNotifications } from "@/lib/utils";
 import { Bell } from "lucide-react";
+import { useSearchParams } from "react-router";
 
 function Notifications() {
-  const { isLoading, notifications } = useNotifications();
+  const { isLoading, notifications, count } = useNotifications();
+  const [searchParams] = useSearchParams();
+  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+  const { page: currentPage, totalPages } = getPagination(page, count!);
 
   if (isLoading)
     return (
@@ -29,18 +36,32 @@ function Notifications() {
   if (notifications === null) return;
   const groupedNotifications = groupNotifications(notifications);
 
-  return groupedNotifications.map((group) => (
-    <div key={group.label} className="mb-5 space-y-3">
-      <p className="text-muted-foreground text-xs font-bold tracking-widest uppercase md:text-sm">
-        {group.label}
-      </p>
-      <ul className="space-y-3">
-        {group.items?.map((notification) => (
-          <NotificationCard key={notification.id} notification={notification} />
-        ))}
-      </ul>
+  return (
+    <div>
+      {groupedNotifications.map((group) => (
+        <div key={group.label} className="mb-5 space-y-3">
+          <p className="text-muted-foreground text-xs font-bold tracking-widest uppercase md:text-sm">
+            {group.label}
+          </p>
+          <ul className="space-y-3">
+            {group.items?.map((notification) => (
+              <Modal key={notification.id}>
+                <Modal.Trigger>
+                  <NotificationCard notification={notification} />
+                </Modal.Trigger>
+
+                <Modal.Content>
+                  <FullNotification notification={notification} />
+                </Modal.Content>
+              </Modal>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <CustomPagination currentPage={currentPage} totalPages={totalPages} />
     </div>
-  ));
+  );
 }
 
 export default Notifications;

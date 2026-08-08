@@ -1,6 +1,7 @@
 import { ACTIVITYNAVIGATIONS } from "@/shared/constants";
 import { NavLink } from "react-router";
 import { Button } from "./ui/button";
+import UnreadCount from "./UnreadCount";
 
 function ActivityNavigations() {
   return (
@@ -19,6 +20,11 @@ function ActivityNavigations() {
                 className={`w-full cursor-pointer text-xs transition-all md:text-sm ${isActive ? "hover:bg-primary" : "hover:bg-transparent"}`}
               >
                 {tab.label}
+                {tab.label === "Notification" && (
+                  <UnreadCount
+                    className={` ${isActive ? "text-primary bg-white" : "bg-primary text-white"}`}
+                  />
+                )}
               </Button>
             )}
           </NavLink>

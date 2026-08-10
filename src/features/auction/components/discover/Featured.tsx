@@ -9,7 +9,7 @@ function Featured() {
 
   if (isLoading)
     return (
-      <div className="flex snap-x snap-mandatory scrollbar-none gap-3 overflow-x-auto px-2">
+      <div className="flex snap-x snap-mandatory scrollbar-none gap-3 overflow-x-auto">
         {Array.from({ length: 6 }).map((_, i) => (
           <FeaturedAuctionCardSkeleton key={i} />
         ))}
@@ -26,7 +26,7 @@ function Featured() {
     );
 
   return (
-    <ul className="flex snap-x snap-mandatory scrollbar-none gap-3 overflow-x-auto px-2">
+    <ul className="flex snap-x snap-mandatory scrollbar-none gap-3 overflow-x-auto">
       {featuredAuctions.map((auction) => (
         <li key={auction.id}>
           <FeaturedCard auction={auction} />

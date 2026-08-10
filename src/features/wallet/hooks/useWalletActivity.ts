@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
-import { getWalletActivity } from "../apiWalletActivity";
+import { getWalletActivity } from "../apiWallet";
 
 export function useWalletActivity() {
   const [searchParams] = useSearchParams();

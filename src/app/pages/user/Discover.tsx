@@ -16,35 +16,37 @@ function Discover() {
     <PageContainer className="space-y-3">
       <Header />
 
-      <section className="space-y-3">
-        <div className="flex items-center justify-between px-2">
-          <Title>Live &amp; Ending Soon</Title>
+      <div className="space-y-7 px-2 md:px-4 md:py-5">
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Title>Live &amp; Ending Soon</Title>
 
-          <Button
-            variant="link"
-            size="sm"
-            className="cursor-pointer text-xs md:text-sm"
-          >
-            See all <ChevronRight size={13} />
-          </Button>
-        </div>
-        <Featured />
-      </section>
+            <Button
+              variant="link"
+              size="sm"
+              className="cursor-pointer text-xs md:text-sm"
+            >
+              See all <ChevronRight size={13} />
+            </Button>
+          </div>
+          <Featured />
+        </section>
 
-      <section className="space-y-2 px-2">
-        <Title>Categories</Title>
-        <Categories />
-      </section>
+        <section className="space-y-2">
+          <Title>Categories</Title>
+          <Categories />
+        </section>
 
-      <section className="space-y-2 px-2">
-        <Title>
-          {currentCategory === "ALL"
-            ? "All Auctions"
-            : currentCategory.replace("_", " ")}
-        </Title>
+        <section className="space-y-2">
+          <Title>
+            {currentCategory === "ALL"
+              ? "All Auctions"
+              : currentCategory.replace("_", " ")}
+          </Title>
 
-        <DiscoverAuctions />
-      </section>
+          <DiscoverAuctions />
+        </section>
+      </div>
     </PageContainer>
   );
 }

@@ -1,50 +1,52 @@
 import PageHeader from "@/components/PageHeader";
-import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import UserAvatar from "@/components/UserAvatar";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { useLogout } from "@/features/auth/hooks/useLogout";
+import { useWalletAccount } from "@/features/wallet/hooks/useWalletAccount";
 import { formatAmount } from "@/lib/utils";
-import { Loader2, LogOut, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 
 function Header() {
   const hour = new Date().getHours();
   const greeting =
     hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
-  const { isPending, logout } = useLogout();
   const { user } = useCurrentUser();
+  const { isLoading, available } = useWalletAccount();
 
   return (
-    <PageHeader className="px-2 py-3.5">
+    <PageHeader>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-muted-foreground text-sm md:text-base">
-            {greeting}
-          </p>
-          <p className="font-display text-lg leading-tight font-bold md:text-xl">
+          <p className="text-muted-foreground text-sm md:text-lg">{greeting}</p>
+          <p className="font-display text-lg leading-tight font-bold md:text-2xl">
             {user?.profile.full_name}
           </p>
         </div>
+
         <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-amber-700">
-            <Wallet size={13} />
-            <span className="font-mono text-xs font-semibold md:text-sm">
-              {formatAmount(1000000)}
-            </span>
+          <div className="hidden items-center gap-3 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-amber-700 md:flex">
+            {isLoading ? (
+              <>
+                <Skeleton className="h-5 w-7" />
+                <Skeleton className="h-5 w-16" />
+              </>
+            ) : (
+              <>
+                <Wallet size={16} />
+                {available && (
+                  <span className="font-mono text-xs font-semibold md:text-sm">
+                    {formatAmount(available?.balance)}
+                  </span>
+                )}
+              </>
+            )}
           </div>
 
           <UserAvatar
             url={user?.profile.avatar_url || ""}
             fallback={user?.profile.full_name[0]}
           />
-          <Button
-            onClick={() => logout()}
-            type="button"
-            variant="ghost"
-            className="hover:cursour-pointer"
-          >
-            {isPending ? <Loader2 /> : <LogOut />}
-          </Button>
         </div>
       </div>
     </PageHeader>

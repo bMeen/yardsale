@@ -5,7 +5,7 @@ type UserAvatar =
 
 function UserAvatar({ url, fallback }: UserAvatar) {
   return (
-    <Avatar>
+    <Avatar size="lg">
       <AvatarImage src={url} />
       <AvatarFallback>{fallback}</AvatarFallback>
     </Avatar>

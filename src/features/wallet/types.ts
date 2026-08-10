@@ -1,7 +1,9 @@
 import type { Database } from "@/shared/supabase/database.types";
+import type { getWalletBalance } from "./apiWallet";
 
 export type Reference = Database["public"]["Enums"]["reference_type"];
 export type ActivityDirection = "CREDIT" | "DEBIT" | "HOLD" | "RELEASE";
+export type AccountType = Database["public"]["Enums"]["wallet_account_type"];
 
 export const TransactionEntryType = {
   WALLET_RESET: "WALLET_RESET",
@@ -26,3 +28,9 @@ export type Activity = {
   reference_type: Reference;
   total_count: number;
 };
+
+/* export type UserBalance = {
+  account_type: AccountType;
+  balance: number;
+}; */
+export type UserBalance = Awaited<ReturnType<typeof getWalletBalance>>[0];

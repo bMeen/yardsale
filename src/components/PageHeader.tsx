@@ -9,7 +9,7 @@ function PageHeader({
 }) {
   return (
     <div
-      className={`bg-background/95 border-border sticky top-0 z-20 border-b backdrop-blur-sm ${className}`}
+      className={`bg-background/95 border-border sticky top-0 z-20 border-b px-2 py-4 backdrop-blur-sm md:px-4 ${className}`}
     >
       {children}
     </div>

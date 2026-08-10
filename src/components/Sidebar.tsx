@@ -4,11 +4,13 @@ import { NavLink } from "react-router";
 import { Plus } from "lucide-react";
 import { formatAmount } from "@/lib/utils";
 import UnreadCount from "./UnreadCount";
-
-const unreadCount = 5;
+import { useWalletAccount } from "@/features/wallet/hooks/useWalletAccount";
+import { Skeleton } from "./ui/skeleton";
+import Logout from "@/features/auth/components/Logout";
 
 function Sidebar() {
   const sideItems = NAVIGATIONS.filter((i) => i.id !== "create");
+  const { isLoading, available } = useWalletAccount();
 
   return (
     <aside className="bg-card border-border sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r md:flex">
@@ -31,35 +33,47 @@ function Sidebar() {
         </NavLink>
       </div>
 
-      <ul className="flex-1 scrollbar-none space-y-1 overflow-y-auto p-4">
-        {sideItems.map((item) => {
-          return (
-            <NavLink to={item.href} className="block" key={item.id}>
-              {({ isActive }) => (
-                <li
-                  className={`relative flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${isActive ? "bg-primary/10 text-primary font-semibold" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
-                >
-                  <item.icon size={17} strokeWidth={isActive ? 2.5 : 1.5} />
-                  {item.label}
-                  {item.id === "activity" && unreadCount > 0 && (
-                    <UnreadCount className="bg-primary text-primary-foreground ml-auto" />
-                  )}
-                </li>
-              )}
-            </NavLink>
-          );
-        })}
+      <ul className="flex flex-1 scrollbar-none flex-col justify-between space-y-1 overflow-y-auto p-4">
+        <div className="space-y-2">
+          {sideItems.map((item) => {
+            return (
+              <NavLink to={item.href} className="block" key={item.id}>
+                {({ isActive }) => (
+                  <li
+                    className={`relative flex w-full items-center gap-3 rounded-xl p-4 text-sm font-medium transition-colors ${isActive ? "bg-primary/10 text-primary font-semibold" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+                  >
+                    <item.icon size={17} strokeWidth={isActive ? 2.5 : 1.5} />
+                    {item.label}
+                    {item.id === "activity" && <UnreadCount type="sidebar" />}
+                  </li>
+                )}
+              </NavLink>
+            );
+          })}
+        </div>
+
+        <Logout />
       </ul>
 
       <div className="border-border border-t p-4">
         <div className="bg-muted rounded-xl p-3.5">
-          <p className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
-            Available Balance
-          </p>
-          <p className="mt-0.5 font-mono text-lg font-bold">
-            {" "}
-            {formatAmount(1000000)}
-          </p>
+          {isLoading ? (
+            <>
+              <Skeleton className="h-3 w-7" />
+              <Skeleton className="h-3 w-16" />
+            </>
+          ) : (
+            available && (
+              <>
+                <p className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase md:text-xs">
+                  Available Balance
+                </p>
+                <p className="font-mono text-lg font-bold">
+                  {formatAmount(available?.balance)}
+                </p>
+              </>
+            )
+          )}
         </div>
       </div>
     </aside>

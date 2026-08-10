@@ -11,7 +11,7 @@ function ActivityLayout() {
   return (
     <PageContainer>
       <PageHeader>
-        <div className="space-y-3 px-2 pt-4 pb-3">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Title>Activity</Title>
 
@@ -29,7 +29,7 @@ function ActivityLayout() {
         </div>
       </PageHeader>
 
-      <div className="px-2 py-4">
+      <div className="px-2 py-4 md:p-4">
         <Outlet />
       </div>
     </PageContainer>

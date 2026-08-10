@@ -6,6 +6,7 @@ import AuctionCard from "../AuctionCard";
 import CustomPagination from "@/components/CustomPagination";
 import { getPagination } from "@/lib/utils";
 import { useSearchParams } from "react-router";
+import StatusFilter from "./StatusFilter";
 
 function AuctionList() {
   const { isLoading, auctions, count } = useAuctions();
@@ -33,7 +34,8 @@ function AuctionList() {
 
   return (
     <div>
-      <ul className="flex-1 space-y-3 px-2 py-4">
+      <StatusFilter />
+      <ul className="flex-1 space-y-3 px-2 py-4 md:p-4">
         {auctions?.map((auction) => (
           <AuctionCard compact auction={auction} key={auction.id} />
         ))}

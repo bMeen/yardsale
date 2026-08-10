@@ -22,6 +22,7 @@ function ActivityNavigations() {
                 {tab.label}
                 {tab.label === "Notification" && (
                   <UnreadCount
+                    type="activitybar"
                     className={` ${isActive ? "text-primary bg-white" : "bg-primary text-white"}`}
                   />
                 )}

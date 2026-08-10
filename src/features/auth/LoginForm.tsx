@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useLogin } from "./hooks/useLogin";
+import { Loader2, LogIn } from "lucide-react";
 
 const schema = z.object({
   email: z.email("Invalid Email"),
@@ -27,7 +28,7 @@ function LoginForm() {
     },
     resolver: zodResolver(schema),
   });
-  const { login } = useLogin();
+  const { isPending, login } = useLogin();
 
   function onSubmit(values: LoginFields) {
     login(values, {
@@ -55,8 +56,9 @@ function LoginForm() {
       />
 
       <div className="flex items-center justify-end">
-        <Button disabled={isSubmitting} type="submit" size="lg">
+        <Button disabled={isSubmitting || isPending} type="submit" size="lg">
           Login
+          {isPending ? <Loader2 className="animate-spin" /> : <LogIn />}
         </Button>
       </div>
     </form>

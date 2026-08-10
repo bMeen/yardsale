@@ -1,8 +1,7 @@
 import { NAVIGATIONS } from "@/shared/constants";
 import { Plus } from "lucide-react";
 import { NavLink } from "react-router";
-
-const unreadCount = 5;
+import UnreadCount from "./UnreadCount";
 
 function BottomNav() {
   return (
@@ -32,11 +31,7 @@ function BottomNav() {
                 >
                   <item.icon size={22} strokeWidth={isActive ? 2.5 : 1.5} />
 
-                  {item.id === "activity" && unreadCount > 0 && (
-                    <span className="bg-primary text-primary-foreground absolute -top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold">
-                      {unreadCount}
-                    </span>
-                  )}
+                  {item.id === "activity" && <UnreadCount type="bottomNav" />}
 
                   {item.label && (
                     <span className="text-[10px] font-medium">

@@ -1,13 +1,14 @@
-import { PER_PAGE } from "@/shared/constants";
+import { AUCTION_IMAGE_BUCKET, PER_PAGE } from "@/shared/constants";
 import supabase from "@/shared/supabase/client";
-import type {
-  AuctionListType,
-  FullAuction,
-  GetAuctionsParams,
-  GetAuctionsResponse,
-  RPC,
+import {
+  RPC_BY_TYPE,
+  type FullAuction,
+  type GetAuctionsParams,
+  type GetAuctionsResponse,
+  type rpcType,
 } from "./types";
-import { getRange } from "@/lib/utils";
+import { getRange, validateImage } from "@/lib/utils";
+import { getCurrentUserApi } from "../auth/apiAuth";
 
 const AUCTION_FULL_QUERY = `*, auction_images(storage_path, display_order), highest_bid:bids!fk_auctions_highest_bid(
       id,
@@ -27,12 +28,6 @@ export async function getFeaturedAuctions() {
 
   return data as FullAuction[];
 }
-
-type rpcType = Exclude<AuctionListType, "MY_AUCTIONS" | "ALL">;
-const RPC_BY_TYPE: Partial<Record<rpcType, RPC>> = {
-  PARTICIPATING: "get_participating_auctions",
-  WATCHLIST: "get_watchlist_auctions",
-};
 
 export async function getAuctions({
   type,
@@ -100,6 +95,43 @@ export async function getAuctions({
     data: data as FullAuction[] | null,
     count: count ?? 0,
   };
+}
+
+export async function uploadAuctionImages(file: File) {
+  validateImage(file);
+
+  const user = await getCurrentUserApi();
+  if (!user) return;
+
+  const extension = file.name.split(".").pop()?.toLowerCase() ?? "webp";
+  const path = `temp/${user.id}/${crypto.randomUUID()}.${extension}`;
+
+  const { error } = await supabase.storage
+    .from(AUCTION_IMAGE_BUCKET)
+    .upload(path, file, {
+      cacheControl: "3600",
+      upsert: false,
+      contentType: file.type,
+    });
+
+  if (error) throw new Error(error.message);
+  return path;
+}
+
+export async function deleteAuctionImage(path: string) {
+  const { error } = await supabase.storage
+    .from(AUCTION_IMAGE_BUCKET)
+    .remove([path]);
+
+  if (error) throw new Error(error.message);
+  return path;
+}
+
+export function getImageUrl(path: string) {
+  if (!path) return "";
+
+  return supabase.storage.from(AUCTION_IMAGE_BUCKET).getPublicUrl(path).data
+    .publicUrl;
 }
 
 //bids!bids_auction_id_fkey(

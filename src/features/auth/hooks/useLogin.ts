@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginApi } from "../apiAuth";
-import type { LoginFields } from "../LoginForm";
 import { useNavigate } from "react-router";
 import { toast } from "@/components/ui/toast";
+import type { LoginFields } from "../components/LoginForm";
 
 export function useLogin() {
   const navigate = useNavigate();

@@ -6,8 +6,10 @@ import {
   HOUR,
   KOBO_RATE,
   PER_PAGE,
+  ACCEPTED_AUCTION_IMAGE_TYPES,
+  MAX_AUCTION_IMAGE_SIZE,
 } from "@/shared/constants";
-import supabase from "@/shared/supabase/client";
+
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -60,13 +62,6 @@ export function formatTimeLeft(endsAt: Date) {
     label: `${seconds}s`,
     urgent: true,
   };
-}
-
-export function getImageUrl(path: string) {
-  if (!path) return "";
-
-  return supabase.storage.from("auction-images").getPublicUrl(path).data
-    .publicUrl;
 }
 
 export function formatTime(date: Date): string {
@@ -122,4 +117,17 @@ export function getPagination(
     page: safePage,
     totalPages,
   };
+}
+
+export function validateImage(file: File) {
+  if (
+    !ACCEPTED_AUCTION_IMAGE_TYPES.includes(
+      file.type as (typeof ACCEPTED_AUCTION_IMAGE_TYPES)[number],
+    )
+  ) {
+    throw new Error("Only JPEG, PNG, and WEBP images are allowed.");
+  }
+  if (file.size > MAX_AUCTION_IMAGE_SIZE) {
+    throw new Error("Each image must be smaller than 10 MB.");
+  }
 }

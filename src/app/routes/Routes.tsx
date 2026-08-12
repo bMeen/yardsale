@@ -15,7 +15,7 @@ import ActivityLayout from "../layouts/ActivityLayout";
 const Discover = lazy(() => import("../pages/user/Discover"));
 const Auctions = lazy(() => import("../pages/user/auctions/Auctions"));
 const Auction = lazy(() => import("../pages/user/auctions/Auction"));
-const Create = lazy(() => import("../pages/user/auctions/Create"));
+const Create = lazy(() => import("../pages/user/Create"));
 const Edit = lazy(() => import("../pages/user/auctions/Edit"));
 const Notifications = lazy(
   () => import("../pages/user/activity/Notifications"),
@@ -38,10 +38,11 @@ function Router() {
           >
             <Route path="discover" element={<Discover />} />
 
+            <Route path="create" element={<Create />} />
+
             <Route path="auctions">
               <Route index element={<Auctions />} />
               <Route path=":auctionId" element={<Auction />} />
-              <Route path="create" element={<Create />} />
               <Route path=":auctionId/edit" element={<Edit />} />
             </Route>
 

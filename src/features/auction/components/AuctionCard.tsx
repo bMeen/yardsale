@@ -1,6 +1,7 @@
-import { formatAmount, getImageUrl } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
 import type { AuctionStatus, FullAuction } from "../types";
 import { Button } from "@/components/ui/button";
+import { getImageUrl } from "../apiAuctions";
 
 type VisibleStatus = Exclude<AuctionStatus, "CANCELLED">;
 const STATUS_PILL: Record<VisibleStatus, string> = {

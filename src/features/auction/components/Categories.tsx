@@ -1,21 +1,6 @@
-import { Badge } from "@/components/ui/badge";
 import { useSearchParams } from "react-router";
-import type { Category } from "../types";
-
-const CATEGORIES: Category[] = [
-  "ALL",
-  "ELECTRONICS",
-  "PHONES_TABLETS",
-  "COMPUTERS",
-  "HOME_APPLIANCES",
-  "FURNITURE",
-  "FASHION",
-  "BOOKS",
-  "SPORTS",
-  "TOYS",
-  "AUTOMOTIVE",
-  "OTHERS",
-];
+import CategoryBadge from "@/components/CategoryBadge";
+import { CATEGORIES } from "@/shared/constants";
 
 function Categories() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,14 +21,13 @@ function Categories() {
   return (
     <div className="flex scrollbar-none gap-3 overflow-x-auto">
       {CATEGORIES.map((category) => (
-        <Badge
+        <CategoryBadge
           key={category}
-          variant={currentCategory === category ? "default" : "secondary"}
-          className="capitalize hover:cursor-pointer md:h-8 md:px-4 md:py-2 md:text-sm"
+          category={category}
           onClick={() => handleSetCategory(category)}
-        >
-          {category.replace("_", " ")}
-        </Badge>
+          active={currentCategory}
+          className="md:h-8 md:px-4 md:py-2 md:text-sm"
+        />
       ))}
     </div>
   );

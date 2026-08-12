@@ -20,7 +20,7 @@ function Sidebar() {
 
       <div className="border-border border-b p-4">
         <NavLink
-          to="auctions/create"
+          to="/create"
           className={({ isActive }) =>
             `flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all ${
               isActive

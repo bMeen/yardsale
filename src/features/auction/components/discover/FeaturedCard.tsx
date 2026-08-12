@@ -1,7 +1,8 @@
-import { formatAmount, getImageUrl } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
 import { Clock } from "lucide-react";
 import { formatTimeLeft } from "@/lib/utils";
 import type { FullAuction } from "../../types";
+import { getImageUrl } from "../../apiAuctions";
 
 function FeaturedCard({ auction }: { auction: FullAuction }) {
   const { label, urgent } = formatTimeLeft(new Date(auction.ends_at));

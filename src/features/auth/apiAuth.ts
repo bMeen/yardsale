@@ -1,5 +1,5 @@
 import supabase from "@/shared/supabase/client";
-import type { LoginFields } from "./LoginForm";
+import type { LoginFields } from "./components/LoginForm";
 
 export async function loginApi({ email, password }: LoginFields) {
   const { data, error } = await supabase.auth.signInWithPassword({

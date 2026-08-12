@@ -1,5 +1,9 @@
 import type { LucideIcon } from "lucide-react";
-import type { AuctionListType, AuctionStatus } from "@/features/auction/types";
+import type {
+  AuctionListType,
+  AuctionStatus,
+  Category,
+} from "@/features/auction/types";
 import type { NotificationType } from "@/features/notification/types";
 import {
   Bell,
@@ -36,6 +40,15 @@ export const DAY = 24 * HOUR;
 export const PER_PAGE = 10;
 export const KOBO_RATE = 100;
 
+export const AUCTION_IMAGE_BUCKET = "auction-images";
+export const MAX_AUCTION_IMAGES = 3;
+export const MAX_AUCTION_IMAGE_SIZE = 10 * 1024 * 1024;
+export const ACCEPTED_AUCTION_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+] as const;
+
 export const STALE_TIME = {
   SHORT: 30 * SECOND,
   MINUTE: MINUTE,
@@ -47,7 +60,7 @@ export const STALE_TIME = {
 export const NAVIGATIONS = [
   { id: "home", icon: Home, label: "Home", href: "discover" },
   { id: "auctions", icon: Tag, label: "Auctions", href: "auctions" },
-  { id: "create", icon: Plus, label: "", href: "auctions/create" },
+  { id: "create", icon: Plus, label: "", href: "create" },
   { id: "activity", icon: Bell, label: "Activity", href: "activity" },
   { id: "profile", icon: User, label: "Profile", href: "profile" },
 ];
@@ -198,3 +211,18 @@ export const DIRECTION_STYLE: Record<
     sign: "",
   },
 };
+
+export const CATEGORIES: Category[] = [
+  "ALL",
+  "ELECTRONICS",
+  "PHONES_TABLETS",
+  "COMPUTERS",
+  "HOME_APPLIANCES",
+  "FURNITURE",
+  "FASHION",
+  "BOOKS",
+  "SPORTS",
+  "TOYS",
+  "AUTOMOTIVE",
+  "OTHERS",
+];

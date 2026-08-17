@@ -579,6 +579,18 @@ export type Database = {
       }
       format_naira: { Args: { p_amount_kobo: number }; Returns: string }
       get_admin_dashboard_stats: { Args: never; Returns: Json }
+      get_auction_bids: {
+        Args: { p_auction_id: string; p_limit?: number; p_page?: number }
+        Returns: {
+          amount: number
+          bidder: Json
+          created_at: string
+          id: string
+          status: Database["public"]["Enums"]["bid_status"]
+          total_count: number
+        }[]
+      }
+      get_auction_detail: { Args: { p_auction_id: string }; Returns: Json }
       get_participating_auctions: {
         Args: {
           p_category?: Database["public"]["Enums"]["auction_category"]

@@ -1,15 +1,9 @@
 import { formatAmount } from "@/lib/utils";
-import type { AuctionStatus, FullAuction } from "../types";
+import type { FullAuction, VisibleStatus } from "../types";
 import { Button } from "@/components/ui/button";
 import { getImageUrl } from "../apiAuctions";
-
-type VisibleStatus = Exclude<AuctionStatus, "CANCELLED">;
-const STATUS_PILL: Record<VisibleStatus, string> = {
-  ACTIVE: "bg-emerald-100 text-emerald-700",
-  SCHEDULED: "bg-sky-100 text-sky-700",
-  ENDED: "bg-stone-100 text-stone-500",
-  SETTLED: "bg-violet-100 text-violet-700",
-};
+import { useNavigate } from "react-router";
+import { STATUS_PILL } from "@/shared/constants";
 
 function AuctionCard({
   auction,
@@ -26,9 +20,18 @@ function AuctionCard({
 
   const imgSrc = getImageUrl(auction?.auction_images[0]?.storage_path);
 
+  const navigate = useNavigate();
+
+  function goToAuction() {
+    navigate(`/auctions/${auction.id}`);
+  }
+
   if (compact)
     return (
-      <div className="bg-card flex cursor-pointer gap-3 rounded-2xl p-3 transition-shadow hover:shadow-sm">
+      <div
+        onClick={goToAuction}
+        className="bg-card flex cursor-pointer gap-3 rounded-2xl p-3 transition-shadow hover:shadow-sm"
+      >
         <div className="bg-muted h-20 w-20 shrink-0 overflow-hidden rounded-xl">
           {imgSrc && (
             <img
@@ -86,7 +89,10 @@ function AuctionCard({
     );
 
   return (
-    <div className="bg-card group cursor-pointer overflow-hidden rounded-2xl transition-all duration-200 hover:shadow-sm">
+    <div
+      onClick={goToAuction}
+      className="bg-card group cursor-pointer overflow-hidden rounded-2xl transition-all duration-200 hover:shadow-sm"
+    >
       <div className="bg-muted relative h-50 overflow-hidden">
         {imgSrc && (
           <img

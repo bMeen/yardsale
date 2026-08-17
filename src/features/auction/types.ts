@@ -1,4 +1,5 @@
 import type { Database } from "@/shared/supabase/database.types";
+import type { Profile } from "../identity/types";
 
 export const CategoryEnum = {
   ELECTRONICS: "ELECTRONICS",
@@ -52,3 +53,46 @@ export type GetAuctionsResponse = {
 
 export type AuctionForm =
   Database["public"]["Functions"]["create_auction"]["Args"];
+
+export type VisibleStatus = Exclude<AuctionStatus, "CANCELLED">;
+
+export type AuctionBid = Pick<Bid, "id" | "amount" | "status" | "created_at">;
+export type Image = Pick<AuctionImages, "display_order" | "storage_path">;
+export type User = Pick<Profile, "id" | "username" | "avatar_url">;
+export type HighestBid = Pick<Bid, "id" | "amount" | "created_at"> & {
+  bidder: User;
+};
+
+export type AuctionDetails = {
+  id: string;
+  title: string;
+  description: string;
+  category: Category;
+
+  starting_price: number;
+  current_price: number;
+  bid_count: number;
+
+  starts_at: string;
+  ends_at: string;
+  created_at: string;
+  updated_at: string;
+  settled_at: string | null;
+
+  status: AuctionStatus;
+
+  seller: User;
+  winner: User | null;
+  highest_bid: HighestBid | null;
+
+  my_bid: AuctionBid | null;
+  is_leading: boolean;
+  is_watchlisted: boolean;
+
+  auction_images: Image[];
+};
+
+export type AuctionDetailsBid = AuctionBid & {
+  bidder: User;
+  total_count: number;
+};

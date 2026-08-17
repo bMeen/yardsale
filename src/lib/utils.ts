@@ -131,3 +131,12 @@ export function validateImage(file: File) {
     throw new Error("Each image must be smaller than 10 MB.");
   }
 }
+
+export function getInitials(name: string) {
+  return name
+    .split(" ")
+    .map((name) => name[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}

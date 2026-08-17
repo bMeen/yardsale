@@ -2,6 +2,8 @@ import { AUCTION_IMAGE_BUCKET, PER_PAGE } from "@/shared/constants";
 import supabase from "@/shared/supabase/client";
 import {
   RPC_BY_TYPE,
+  type AuctionDetails,
+  type AuctionDetailsBid,
   type FullAuction,
   type GetAuctionsParams,
   type GetAuctionsResponse,
@@ -134,8 +136,31 @@ export function getImageUrl(path: string) {
     .publicUrl;
 }
 
-//bids!bids_auction_id_fkey(
-//        id,
-//        bidder_id,
-//        amount
-//     )
+export async function getAuction(id: string | undefined) {
+  if (!id) return;
+  const { data, error } = await supabase.rpc("get_auction_detail", {
+    p_auction_id: id,
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data as unknown as AuctionDetails;
+}
+
+export async function getAuctionBids({
+  id,
+  page,
+}: {
+  id: string | undefined;
+  page: number;
+}) {
+  if (!id) return;
+  const { data, error } = await supabase.rpc("get_auction_bids", {
+    p_auction_id: id,
+    p_page: page,
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data as unknown as AuctionDetailsBid[];
+}

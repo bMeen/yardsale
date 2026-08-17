@@ -3,6 +3,7 @@ import type {
   AuctionListType,
   AuctionStatus,
   Category,
+  VisibleStatus,
 } from "@/features/auction/types";
 import type { NotificationType } from "@/features/notification/types";
 import {
@@ -39,6 +40,7 @@ export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 export const PER_PAGE = 10;
 export const KOBO_RATE = 100;
+export const MIN_BID_INCREMENT = 1000;
 
 export const AUCTION_IMAGE_BUCKET = "auction-images";
 export const MAX_AUCTION_IMAGES = 3;
@@ -88,6 +90,13 @@ export const AUCTIONSTATUSOPTIONS: {
   { label: "Settled", value: "SETTLED" },
   //{ label: "Cancelled", value: "CANCELLED" },
 ];
+
+export const STATUS_PILL: Record<VisibleStatus, string> = {
+  ACTIVE: "bg-emerald-100 text-emerald-700",
+  SCHEDULED: "bg-sky-100 text-sky-700",
+  ENDED: "bg-stone-100 text-stone-500",
+  SETTLED: "bg-violet-100 text-violet-700",
+};
 
 type NotificationConfig = {
   icon: LucideIcon;

@@ -2,11 +2,15 @@ import ActivityNavigations from "@/components/ActivityNavigations";
 import PageContainer from "@/components/PageContainer";
 import PageHeader from "@/components/PageHeader";
 import Title from "@/components/Title";
-import { Button } from "@/components/ui/button";
+import MarkAllRead from "@/features/notification/components/MarkAllRead";
+import { useNotifications } from "@/features/notification/hooks/useNotifications";
 import { Outlet, useLocation } from "react-router";
 
 function ActivityLayout() {
   const location = useLocation();
+  const { unreadCount } = useNotifications();
+  const show =
+    location.pathname === "/activity" && unreadCount ? unreadCount > 0 : false;
 
   return (
     <PageContainer>
@@ -15,14 +19,7 @@ function ActivityLayout() {
           <div className="flex items-center justify-between">
             <Title>Activity</Title>
 
-            {location.pathname === "/activity" && (
-              <Button
-                variant="link"
-                className="cursor-pointer text-xs md:text-sm"
-              >
-                Mark all read
-              </Button>
-            )}
+            {show && <MarkAllRead />}
           </div>
 
           <ActivityNavigations />

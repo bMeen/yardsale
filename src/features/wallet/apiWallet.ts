@@ -7,7 +7,7 @@ export async function getWalletBalance() {
     .select("account_type, balance")
     .order("account_type", { ascending: true });
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 
   return data;
 }
@@ -17,10 +17,15 @@ export async function getWalletActivity({ page = 1 }) {
     p_page: page,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 
   return {
     data: data as unknown as Activity[],
     count: data?.[0]?.total_count ?? 0,
   };
+}
+
+export async function resetWalletBalance() {
+  const { error } = await supabase.rpc("reset_wallet");
+  if (error) throw error;
 }

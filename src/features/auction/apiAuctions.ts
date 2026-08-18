@@ -26,7 +26,7 @@ export async function getFeaturedAuctions() {
     .order("ends_at", { ascending: true })
     .limit(6);
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 
   return data as FullAuction[];
 }
@@ -51,7 +51,7 @@ export async function getAuctions({
       p_status: status,
     });
 
-    if (error) throw new Error(error.message);
+    if (error) throw error;
 
     return {
       data: data
@@ -91,7 +91,7 @@ export async function getAuctions({
     .range(from, to)
     .order("created_at", { ascending: false });
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 
   return {
     data: data as FullAuction[] | null,
@@ -116,7 +116,7 @@ export async function uploadAuctionImages(file: File) {
       contentType: file.type,
     });
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
   return path;
 }
 
@@ -125,7 +125,7 @@ export async function deleteAuctionImage(path: string) {
     .from(AUCTION_IMAGE_BUCKET)
     .remove([path]);
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
   return path;
 }
 
@@ -142,7 +142,7 @@ export async function getAuction(id: string | undefined) {
     p_auction_id: id,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 
   return data as unknown as AuctionDetails;
 }
@@ -160,7 +160,7 @@ export async function getAuctionBids({
     p_page: page,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 
   return data as unknown as AuctionDetailsBid[];
 }

@@ -7,14 +7,14 @@ export async function loginApi({ email, password }: LoginFields) {
     password,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 
   return data;
 }
 
 export async function logoutApi() {
   const { error } = await supabase.auth.signOut();
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 }
 
 export async function googleSignIn() {
@@ -25,7 +25,7 @@ export async function googleSignIn() {
     },
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
 }
 
 export async function getCurrentUserApi() {
@@ -37,6 +37,6 @@ export async function getCurrentUserApi() {
     error,
   } = await supabase.auth.getUser();
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
   return user;
 }

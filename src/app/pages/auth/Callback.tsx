@@ -1,23 +1,20 @@
-import { toast } from "@/components/ui/toast";
+import { useToast } from "@/shared/hooks/useToast";
 import supabase from "@/shared/supabase/client";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 function Callback() {
+  const { toastError } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function getSession() {
       const { data: session, error } = await supabase.auth.getSession();
       if (error) {
-        throw error;
+        toastError(error);
       }
 
       if (!session.session) {
-        toast.add({
-          type: "error",
-          description: "Unable to sign you in.",
-        });
         navigate("/", { replace: true });
         return;
       }
@@ -26,7 +23,7 @@ function Callback() {
     }
 
     getSession();
-  }, [navigate]);
+  }, [navigate, toastError]);
 
   return (
     <div className="flex flex-col items-center">

@@ -1,11 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { formatAmount } from "@/lib/utils";
-import { Wallet } from "lucide-react";
-import { useWalletAccount } from "../hooks/useWalletAccount";
+import { Loader2, Wallet } from "lucide-react";
+import {
+  useWalletAccount,
+  useWalletBalanceReset,
+} from "../hooks/useWalletAccount";
+import WalletCardSkeleton from "./WalletCardSkeleton";
 
 function ProfileWalletCard() {
-  const { accounts, available } = useWalletAccount();
+  const { isLoading, accounts, available } = useWalletAccount();
+  const { isPending, resetWallet } = useWalletBalanceReset();
   const disableTopUp = available && available?.balance >= 10000000;
+
+  if (isLoading) return <WalletCardSkeleton />;
 
   return (
     <div className="bg-primary text-primary-foreground space-y-5 rounded-2xl p-5">
@@ -38,7 +45,9 @@ function ProfileWalletCard() {
         variant="secondary"
         className="w-full cursor-pointer rounded-2xl"
         size="lg"
+        onClick={() => resetWallet()}
       >
+        {isPending && <Loader2 className="animate-spin" />}
         Wallet Top Up
       </Button>
     </div>

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useUpdateProfile } from "../hooks/useUpdateProfile";
 
 const schema = z.object({
   fullname: z.string().trim().min(5, "Full Name is required"),
@@ -17,11 +18,9 @@ export type EditProfileFields = z.infer<typeof schema>;
 function EditProfile() {
   const { close } = useModal();
   const { user } = useCurrentUser();
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm({
+  const { isPending: isSubmitting, update } = useUpdateProfile();
+
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       fullname: user?.profile?.full_name ?? "",
       username: user?.profile?.username ?? "",
@@ -30,7 +29,14 @@ function EditProfile() {
   });
 
   function onSubmit(values: EditProfileFields) {
-    console.log(values);
+    const data = {
+      p_full_name: values.fullname,
+      p_usernam: values.username,
+    };
+    update(data, {
+      onSuccess: () => close(),
+      onError: () => close(),
+    });
   }
 
   return (

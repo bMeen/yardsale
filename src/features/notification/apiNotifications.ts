@@ -21,6 +21,20 @@ export async function getNotificationApi({
     .order("created_at", { ascending: true })
     .range(from, to);
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
   return { data: data as Notification[] | null, count };
+}
+
+export async function markNotificationRead(id: string) {
+  const { error } = await supabase.rpc("mark_notification_read", {
+    p_notification_id: id,
+  });
+
+  if (error) throw error;
+}
+
+export async function markAllNotificationsRead() {
+  const { error } = await supabase.rpc("mark_all_notifications_read");
+
+  if (error) throw error;
 }

@@ -5,7 +5,7 @@ import type {
 } from "@/features/auction/types";
 import { formatTime } from "@/lib/utils";
 import { STATUS_PILL } from "@/shared/constants";
-import { Clock } from "lucide-react";
+import CountdownTimer from "../../CountdownTImer";
 
 type Props = {
   status: AuctionStatus;
@@ -14,7 +14,7 @@ type Props = {
   ends_at: string;
 };
 
-function Status({ status, category, starts_at }: Props) {
+function Status({ status, category, starts_at, ends_at }: Props) {
   const pill =
     STATUS_PILL[status as VisibleStatus] ?? "bg-stone-100 text-stone-500";
 
@@ -30,8 +30,7 @@ function Status({ status, category, starts_at }: Props) {
       </span>
       {status === "ACTIVE" && (
         <div className="ml-auto">
-          <Clock size={18} />
-          {/* <CountdownTimer endsAt={auction.endsAt} /> */}
+          <CountdownTimer endsAt={new Date(ends_at)} />
         </div>
       )}
       {status === "SCHEDULED" && (

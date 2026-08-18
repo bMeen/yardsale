@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { getImageUrl } from "../apiAuctions";
 import { useNavigate } from "react-router";
 import { STATUS_PILL } from "@/shared/constants";
+import CountdownTimer from "./CountdownTImer";
 
 function AuctionCard({
   auction,
@@ -68,9 +69,9 @@ function AuctionCard({
               <p className="text-muted-foreground text-xs">
                 {auction.bid_count} bids
               </p>
-              {/* {auction.status === "Active" && (
-                <CountdownTimer endsAt={auction.endsAt} />
-              )} */}
+              {auction.status === "ACTIVE" && (
+                <CountdownTimer endsAt={new Date(auction.ends_at)} />
+              )}
             </div>
           </div>
         </div>
@@ -113,11 +114,11 @@ function AuctionCard({
             <Heart size={12} className="fill-red-500 text-red-500" />
           </div>
         )} */}
-        {/* {auction.status === "Active" && (
-          <div className="absolute bottom-2 left-2 rounded-full bg-black/60 px-2 py-0.5 backdrop-blur-sm">
-            <CountdownTimer endsAt={auction.endsAt} />
+        {auction.status === "ACTIVE" && (
+          <div className="absolute bottom-2 left-2 rounded-full bg-white/60 px-2 py-0.5 backdrop-blur-sm">
+            <CountdownTimer endsAt={new Date(auction.ends_at)} />
           </div>
-        )} */}
+        )}
       </div>
       <div className="p-3">
         <p className="text-muted-foreground text-[10px] tracking-wide uppercase">

@@ -1,10 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginApi } from "../apiAuth";
 import { useNavigate } from "react-router";
-import { toast } from "@/components/ui/toast";
 import type { LoginFields } from "../components/LoginForm";
+import type { PostgrestError } from "@supabase/supabase-js";
+import { useToast } from "@/shared/hooks/useToast";
 
 export function useLogin() {
+  const { toastError } = useToast();
   const navigate = useNavigate();
 
   const { mutate: login, isPending } = useMutation({
@@ -13,11 +15,8 @@ export function useLogin() {
     onSuccess: () => {
       navigate("/discover", { replace: true });
     },
-    onError: (error) => {
-      toast.add({
-        type: "error",
-        description: `${error.message}`,
-      });
+    onError: (error: PostgrestError) => {
+      toastError(error);
     },
   });
 

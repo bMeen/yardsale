@@ -59,7 +59,7 @@ function AuctionState({ auction }: { auction: AuctionDetails }) {
       )}
       {isMine &&
         (auction.status === "SCHEDULED" || auction.status === "ACTIVE") && (
-          <div className="space-y-1 border">
+          <div className="space-y-1">
             <div>
               <p className="text-muted-foreground text-xs tracking-wide uppercase md:text-sm">
                 {auction.bid_count > 0

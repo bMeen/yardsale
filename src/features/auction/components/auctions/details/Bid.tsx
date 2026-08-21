@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import { useAuction } from "@/features/auction/hooks/useAuction";
+import { useCancelBid } from "@/features/auction/hooks/useAuctionBid";
 import type { AuctionDetailsBid } from "@/features/auction/types";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { formatAmount, formatTime } from "@/lib/utils";
@@ -8,19 +9,19 @@ import { formatAmount, formatTime } from "@/lib/utils";
 function Bid({ bid }: { bid: AuctionDetailsBid }) {
   const { auction } = useAuction();
   const { user } = useCurrentUser();
+  const { isCancelling, cancel } = useCancelBid();
+
   const isMine = bid?.bidder.id === user?.profile?.id;
   const isCancelled = bid.status === "CANCELLED";
   const isLeading = bid.id === auction?.highest_bid?.id;
 
+  function handleCancel() {
+    cancel({ p_bid_id: bid.id });
+  }
+
   return (
     <li
-      className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
-        isCancelled
-          ? "bg-muted opacity-40"
-          : isMine
-            ? "bg-primary/5"
-            : "bg-card"
-      }`}
+      className={`bg-card flex items-center gap-3 rounded-xl p-3 transition-colors`}
     >
       <UserAvatar
         url={bid.bidder.avatar_url || ""}
@@ -33,12 +34,12 @@ function Bid({ bid }: { bid: AuctionDetailsBid }) {
             {isMine ? "You" : bid.bidder.username}
           </p>
           {isLeading && (
-            <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+            <span className="bg-success/10 text-success rounded-full px-1.5 py-0.5 text-[10px] font-semibold">
               Leading
             </span>
           )}
           {isCancelled && (
-            <span className="rounded-full bg-stone-100 px-1.5 py-0.5 text-[10px] font-semibold text-stone-500">
+            <span className="bg-destructive/10 text-destructive rounded-full px-1.5 py-0.5 text-[10px] font-semibold">
               Cancelled
             </span>
           )}
@@ -53,11 +54,20 @@ function Bid({ bid }: { bid: AuctionDetailsBid }) {
         >
           {formatAmount(bid.amount)}
         </p>
-        {isMine && !isCancelled && auction?.status === "ACTIVE" && (
-          <Button variant="destructive" className="cursor-pointer" size="xs">
-            Cancel
-          </Button>
-        )}
+        {isMine &&
+          !isLeading &&
+          !isCancelled &&
+          auction?.status === "ACTIVE" && (
+            <Button
+              disabled={isCancelling}
+              onClick={handleCancel}
+              variant="destructive"
+              className="cursor-pointer"
+              size="xs"
+            >
+              Cancel
+            </Button>
+          )}
       </div>
     </li>
   );

@@ -28,12 +28,12 @@ function CountdownTimer({ endsAt }: { endsAt: Date }) {
 
   return (
     <span
-      className={`flex items-center gap-1 font-mono text-xs font-medium md:text-sm ${
-        urgent ? "text-red-500" : "text-foreground"
+      className={`flex items-center gap-1 font-mono text-xs font-medium md:text-[13px] ${
+        urgent ? "text-red-500" : "text-muted-foreground"
       }`}
     >
-      <Clock size={11} className="shrink-0" />
-      {label}
+      <Clock size={16} className="shrink-0" />
+      Ends in {label}
     </span>
   );
 }

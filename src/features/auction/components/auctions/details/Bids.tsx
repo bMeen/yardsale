@@ -1,7 +1,8 @@
 import EmptyState from "@/components/EmptyState";
-import { useAuctionBids } from "@/features/auction/hooks/useAuction";
+
 import { HandCoins } from "lucide-react";
 import Bid from "./Bid";
+import { useAuctionBids } from "@/features/auction/hooks/useAuctionBid";
 
 function Bids() {
   const { bids } = useAuctionBids();

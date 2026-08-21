@@ -1,5 +1,6 @@
 import type { Database } from "@/shared/supabase/database.types";
 import type { Profile } from "../identity/types";
+import * as z from "zod";
 
 export const CategoryEnum = {
   ELECTRONICS: "ELECTRONICS",
@@ -96,3 +97,68 @@ export type AuctionDetailsBid = AuctionBid & {
   bidder: User;
   total_count: number;
 };
+
+export const schema = z.object({
+  title: z
+    .string({
+      error: "Title is required",
+    })
+    .trim()
+    .min(1, "Title is required"),
+
+  description: z
+    .string({
+      error: "Description is required",
+    })
+    .trim()
+    .min(1, "Description is required"),
+
+  category: z.enum(CategoryEnum, {
+    error: "Category is required",
+  }),
+
+  starting_price: z
+    .number({
+      error: "Starting price is required",
+    })
+    .positive("Starting price must be greater than 0"),
+
+  starts_at: z.date({
+    message: "Start date and time are required",
+  }),
+
+  ends_at: z.date({
+    message: "End date and time are required",
+  }),
+
+  temp_image_paths: z
+    .array(z.string(), { error: "At least one image is required" })
+    .min(1, "At least one image is required.")
+    .max(3, "You can upload a maximum of 3 images."),
+});
+/*   .refine((data) => data.starts_at > new Date(), {
+    message: "Auction must start in the future",
+    path: ["starts_at"],
+  })
+  .refine((data) => data.ends_at.getTime() > data.starts_at.getTime(), {
+    message: "End date and time must be after the start date and time",
+    path: ["ends_at"],
+  }); */
+
+export type AuctionFormFields = z.infer<typeof schema>;
+
+export type PlaceBid = Database["public"]["Functions"]["submit_bid"]["Args"];
+
+export type CancelBid = Database["public"]["Functions"]["cancel_bid"]["Args"];
+
+export type ToggleWatchlist =
+  Database["public"]["Functions"]["toggle_watchlist"]["Args"];
+
+export type CreateAuction =
+  Database["public"]["Functions"]["create_auction"]["Args"];
+
+export type UpdateAuction =
+  Database["public"]["Functions"]["update_auction"]["Args"];
+
+export type CancelAuction =
+  Database["public"]["Functions"]["cancel_auction"]["Args"];

@@ -11,15 +11,37 @@ import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { ModalContext, useModal } from "./context";
 
-function Modal({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false);
+function Modal({
+  children,
+  open: controlledOpen,
+  onOpenChange,
+}: {
+  children: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}) {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : uncontrolledOpen;
+
+  const setOpen = (value: boolean) => {
+    if (!isControlled) {
+      setUncontrolledOpen(value);
+    }
+
+    onOpenChange?.(value);
+  };
+
+  const close = () => {
+    setOpen(false);
+  };
 
   return (
     <ModalContext.Provider
       value={{
         open,
         setOpen,
-        close: () => setOpen(false),
+        close,
       }}
     >
       {children}
@@ -42,14 +64,22 @@ function ModalTrigger({
   });
 }
 
-function ModalContent({ children }: { children: ReactNode }) {
+function ModalContent({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   const { open, setOpen } = useModal();
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-106.25">{children}</DialogContent>
+        <DialogContent className={`sm:max-w-106.25 ${className}`}>
+          {children}
+        </DialogContent>
       </Dialog>
     );
   }

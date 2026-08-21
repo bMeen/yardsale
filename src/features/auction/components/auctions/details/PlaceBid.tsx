@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useBid } from "@/features/auction/hooks/useAuctionBid";
+
 import type { AuctionDetails } from "@/features/auction/types";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { formatAmount } from "@/lib/utils";
@@ -9,16 +11,16 @@ import { useState, type ChangeEvent } from "react";
 
 function PlaceBid({ auction }: { auction: AuctionDetails }) {
   const { user } = useCurrentUser();
+  const [bidInput, setBidInput] = useState("");
+  const [bidError, setBidError] = useState<string | null>(null);
+  const { isPlacing, bid } = useBid();
+
   const isMine = auction.seller.id === user?.profile?.id;
   const canBid = !isMine && auction.status === "ACTIVE";
   const minimumBid =
     auction.current_price > 0
       ? auction.current_price / KOBO_RATE + MIN_BID_INCREMENT
       : auction.starting_price / KOBO_RATE;
-
-  const isPlacing = false;
-  const [bidInput, setBidInput] = useState("");
-  const [bidError, setBidError] = useState<string | null>(null);
 
   const handleQuickBid = (increment: number) => {
     setBidInput(String(minimumBid + increment));
@@ -36,7 +38,10 @@ function PlaceBid({ auction }: { auction: AuctionDetails }) {
       setBidError(`Minimum bid is ${formatAmount(minimumBid * KOBO_RATE)}`);
       return;
     }
-    console.log(amount);
+    bid(
+      { p_amount: amount * KOBO_RATE, p_auction_id: auction.id },
+      { onSuccess: () => setBidInput("") },
+    );
   };
 
   return (
@@ -86,13 +91,19 @@ function PlaceBid({ auction }: { auction: AuctionDetails }) {
                 <p className="text-muted-foreground">₦</p>
               </span>
             </div>
-            <Button onClick={handlePlaceBid} className="h-10 cursor-pointer">
+            <Button
+              onClick={handlePlaceBid}
+              disabled={isPlacing}
+              className="h-10 cursor-pointer"
+            >
               {isPlacing && <Loader2 size={15} className="animate-spin" />}
               {isPlacing ? "Placing…" : "Place Bid"}
             </Button>
           </div>
 
-          {bidError && <p className="text-xs text-red-500">{bidError}</p>}
+          {bidError && (
+            <p className="text-xs text-red-500 md:text-sm">{bidError}</p>
+          )}
           <p className="text-muted-foreground text-xs md:text-sm">
             Min. bid:{" "}
             <span className="font-mono font-medium">

@@ -4,10 +4,16 @@ import {
   RPC_BY_TYPE,
   type AuctionDetails,
   type AuctionDetailsBid,
+  type AuctionFormFields,
+  type CancelAuction,
+  type CancelBid,
   type FullAuction,
   type GetAuctionsParams,
   type GetAuctionsResponse,
+  type PlaceBid,
   type rpcType,
+  type ToggleWatchlist,
+  type UpdateAuction,
 } from "./types";
 import { getRange, validateImage } from "@/lib/utils";
 import { getCurrentUserApi } from "../auth/apiAuth";
@@ -163,4 +169,44 @@ export async function getAuctionBids({
   if (error) throw error;
 
   return data as unknown as AuctionDetailsBid[];
+}
+
+export async function placeBid(data: PlaceBid) {
+  const { error } = await supabase.rpc("submit_bid", data);
+
+  if (error) throw error;
+}
+
+export async function cancelBid(data: CancelBid) {
+  const { error } = await supabase.rpc("cancel_bid", data);
+
+  if (error) throw error;
+}
+
+export async function toggleWatchlist(data: ToggleWatchlist) {
+  const { error } = await supabase.rpc("toggle_watchlist", data);
+
+  if (error) throw error;
+}
+
+export async function createAuction(payload: AuctionFormFields) {
+  const { data, error } = await supabase.functions.invoke("create-auction", {
+    body: payload,
+  });
+
+  if (error) throw error;
+
+  return data as unknown as { auction_id: string };
+}
+
+export async function updateAuction(payload: UpdateAuction) {
+  const { error } = await supabase.rpc("update_auction", payload);
+
+  if (error) throw error;
+}
+
+export async function cancelAuction(payload: CancelAuction) {
+  const { error } = await supabase.rpc("cancel_auction", payload);
+
+  if (error) throw error;
 }

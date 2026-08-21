@@ -64,7 +64,7 @@ export function formatTimeLeft(endsAt: Date) {
   };
 }
 
-export function formatTime(date: Date): string {
+/* export function formatTime(date: Date): string {
   const ms = Date.now() - date.getTime();
   const m = Math.floor(ms / MINUTE);
   const h = Math.floor(ms / HOUR);
@@ -74,6 +74,43 @@ export function formatTime(date: Date): string {
   if (h < 24) return `${h}h ago`;
   if (d < 7) return `${d}d ago`;
   return date.toLocaleDateString("en-NG", { day: "numeric", month: "short" });
+} */
+
+export function formatTime(date: Date): string {
+  const diff = Date.now() - date.getTime();
+
+  // Future
+  if (diff < 0) {
+    const ms = Math.abs(diff);
+    const m = Math.floor(ms / MINUTE);
+    const h = Math.floor(ms / HOUR);
+    const d = Math.floor(ms / DAY);
+
+    if (m < 1) return "in less than a minute";
+    if (m < 60) return `in ${m}m`;
+    if (h < 24) return `in ${h}h`;
+    if (d < 7) return `in ${d}d`;
+
+    return date.toLocaleDateString("en-NG", {
+      day: "numeric",
+      month: "short",
+    });
+  }
+
+  // Past
+  const m = Math.floor(diff / MINUTE);
+  const h = Math.floor(diff / HOUR);
+  const d = Math.floor(diff / DAY);
+
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
+  if (h < 24) return `${h}h ago`;
+  if (d < 7) return `${d}d ago`;
+
+  return date.toLocaleDateString("en-NG", {
+    day: "numeric",
+    month: "short",
+  });
 }
 
 export function groupNotifications(

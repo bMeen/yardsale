@@ -215,10 +215,9 @@ function AuctionImageUpload<T extends FieldValues>({
         multiple
         className="hidden"
         onChange={handleChange}
-        /*  disabled={
+        disabled={
           isUploading || isDeleting || imagePaths.length >= MAX_AUCTION_IMAGES
-        } */
-        disabled
+        }
       />
       {uploadError && <FieldError>{uploadError}</FieldError>}{" "}
       {fieldState.error && !uploadError && (

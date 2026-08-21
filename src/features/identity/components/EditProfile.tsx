@@ -31,7 +31,7 @@ function EditProfile() {
   function onSubmit(values: EditProfileFields) {
     const data = {
       p_full_name: values.fullname,
-      p_usernam: values.username,
+      p_username: values.username,
     };
     update(data, {
       onSuccess: () => close(),

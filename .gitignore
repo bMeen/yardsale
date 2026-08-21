@@ -34,11 +34,7 @@ ui-spec.md
 !.env.example
 
 # Supabase local files
-supabase/.temp/
-supabase/.branches/
-supabase/.env
-supabase/**/*.env
-supabase/seed/
+/supabase/
 
 
 figma-make-app.tsx

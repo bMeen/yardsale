@@ -3,7 +3,7 @@ import { useState } from "react";
 import Bids from "./Bids";
 
 function BidHistory({ count }: { count: number }) {
-  const [showHistory, setShowHistory] = useState(false);
+  const [showHistory, setShowHistory] = useState(true);
 
   return (
     <section className="space-y-3">

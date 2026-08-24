@@ -33,7 +33,7 @@ function Transactions() {
 
   return (
     <div>
-      <ul className="space-y-3">
+      <ul className="space-y-3 pb-4">
         {transactions.map((transaction) => (
           <TransactionCard transaction={transaction} key={transaction.id} />
         ))}

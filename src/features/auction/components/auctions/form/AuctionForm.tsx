@@ -17,7 +17,7 @@ import {
   useCreateAuction,
   useUpdateAuction,
 } from "@/features/auction/hooks/useAuction";
-import { KOBO_RATE } from "@/shared/constants";
+import { KOBO_RATE, MINUTE } from "@/shared/constants";
 
 function AuctionForm({
   auction,
@@ -26,6 +26,8 @@ function AuctionForm({
   auction?: AuctionDetails;
   close?: () => void;
 }) {
+  const now = new Date();
+  const defaultEndsAt = new Date(now.getTime() + 20 * MINUTE);
   const isEditSession = Boolean(auction?.id);
 
   const defaultValues: AuctionFormFields = {
@@ -34,9 +36,9 @@ function AuctionForm({
     category: (auction?.category ?? "") as Exclude<Category, "ALL">,
     starting_price: auction?.starting_price
       ? auction?.starting_price / KOBO_RATE
-      : 0,
-    starts_at: auction?.starts_at ? new Date(auction.starts_at) : new Date(),
-    ends_at: auction?.ends_at ? new Date(auction.ends_at) : new Date(),
+      : "",
+    starts_at: auction?.starts_at ? new Date(auction.starts_at) : now,
+    ends_at: auction?.ends_at ? new Date(auction.ends_at) : defaultEndsAt,
     temp_image_paths:
       auction?.auction_images?.map((image) => image.storage_path) ?? [],
   };
@@ -141,7 +143,7 @@ function AuctionForm({
       p_category: values.category,
       p_description: values.description,
       p_ends_at: values.ends_at.toISOString(),
-      p_starting_price: values.starting_price * KOBO_RATE,
+      p_starting_price: Number(values.starting_price) * KOBO_RATE,
       p_starts_at: values.starts_at.toISOString(),
       p_title: values.title,
     };
@@ -150,14 +152,14 @@ function AuctionForm({
       if (!auction?.id) return;
       update(
         { ...editPayload, p_auction_id: auction?.id },
-        { onSuccess: () => close?.() },
+        { onSuccess: () => close?.(), onError: () => close?.() },
       );
       return;
     }
 
     publish({
       ...values,
-      starting_price: values.starting_price * KOBO_RATE,
+      starting_price: Number(values.starting_price) * KOBO_RATE,
     });
   }
 

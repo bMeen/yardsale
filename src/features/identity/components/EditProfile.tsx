@@ -8,31 +8,70 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
 
-const schema = z.object({
-  fullname: z.string().trim().min(5, "Full Name is required"),
-  username: z.string().trim().min(5, "Username is required"),
+const usernameSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(3, "Minimum 3 characters")
+    .max(30, "Maximum 30 characters")
+    .regex(/^[a-z0-9_]+$/, "Lowercase letters, numbers, and underscores only"),
 });
 
-export type EditProfileFields = z.infer<typeof schema>;
+const editProfileSchema = z.object({
+  fullname: z.string().trim().min(5, "Full Name is required"),
+  username: z
+    .string()
+    .trim()
+    .min(3, "Minimum 3 characters")
+    .max(30, "Maximum 30 characters")
+    .regex(/^[a-z0-9_]+$/, "Lowercase letters, numbers, and underscores only"),
+});
 
-function EditProfile() {
+type FormFields = {
+  fullname?: string;
+  username?: string;
+};
+
+type EditProfileProps = {
+  mode?: "edit" | "updateUsername";
+};
+
+export type EditProfileFields = z.infer<typeof editProfileSchema>;
+
+export type UpdateUsernameFields = z.infer<typeof usernameSchema>;
+
+function EditProfile({ mode = "edit" }: EditProfileProps) {
   const { close } = useModal();
   const { user } = useCurrentUser();
   const { isPending: isSubmitting, update } = useUpdateProfile();
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      fullname: user?.profile?.full_name ?? "",
-      username: user?.profile?.username ?? "",
-    },
-    resolver: zodResolver(schema),
+  const isUpdateUsername = mode === "updateUsername";
+
+  const { control, handleSubmit } = useForm<
+    EditProfileFields | UpdateUsernameFields
+  >({
+    defaultValues: isUpdateUsername
+      ? {
+          username: user?.profile?.username ?? "",
+        }
+      : {
+          fullname: user?.profile?.full_name ?? "",
+          username: user?.profile?.username ?? "",
+        },
+    resolver: zodResolver(
+      isUpdateUsername ? usernameSchema : editProfileSchema,
+    ),
   });
 
-  function onSubmit(values: EditProfileFields) {
-    const data = {
-      p_full_name: values.fullname,
-      p_username: values.username,
-    };
+  function onSubmit(values: FormFields) {
+    const data = isUpdateUsername
+      ? {
+          p_username: values.username,
+        }
+      : {
+          p_full_name: values.fullname,
+          p_username: values.username,
+        };
     update(data, {
       onSuccess: () => close(),
       onError: () => close(),
@@ -41,15 +80,30 @@ function EditProfile() {
 
   return (
     <section className="space-y-4 p-4 md:p-0">
-      <h3 className="font-display text-xl font-bold">Edit Profile</h3>
+      <div>
+        <h3 className="font-display text-xl font-bold">
+          {isUpdateUsername ? "Pick your username" : "Edit Profile"}
+        </h3>
+        {isUpdateUsername && (
+          <p className="text-muted-foreground mt-1.5 text-sm">
+            Your placeholder is{" "}
+            <span className="bg-muted text-foreground rounded px-1.5 py-0.5 font-mono text-xs">
+              {user?.profile?.username}
+            </span>{" "}
+            — change it now or anytime from Profile.
+          </p>
+        )}
+      </div>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <CustomInput
-          control={control}
-          name="fullname"
-          type="text"
-          label="Full Name"
-          placeholder="Enter a fullname"
-        />
+        {!isUpdateUsername && (
+          <CustomInput
+            control={control}
+            name="fullname"
+            type="text"
+            label="Full Name"
+            placeholder="Enter a fullname"
+          />
+        )}
 
         <CustomInput
           control={control}
@@ -65,12 +119,12 @@ function EditProfile() {
             className="h-11 flex-1 cursor-pointer"
             onClick={close}
           >
-            Close
+            {isUpdateUsername ? "Skip for Now" : "Close"}
           </Button>
 
           <Button className="h-11 flex-1 cursor-pointer" type="submit">
             {isSubmitting && <Loader2 className="animate-spin" />}
-            Save Changes
+            {isUpdateUsername ? "Update" : "Save Changes"}
           </Button>
         </div>
       </form>

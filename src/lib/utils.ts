@@ -8,6 +8,7 @@ import {
   PER_PAGE,
   ACCEPTED_AUCTION_IMAGE_TYPES,
   MAX_AUCTION_IMAGE_SIZE,
+  PLACEHOLDER_USERNAME_PATTERN,
 } from "@/shared/constants";
 
 import { clsx, type ClassValue } from "clsx";
@@ -25,9 +26,9 @@ export function formatAmount(amount: number): string {
     : `₦${n.toLocaleString("en-NG")}`;
 }
 
-export function formatTimeLeft(endsAt: Date) {
-  const remaining = endsAt.getTime() - Date.now();
-
+/* export function formatTimeLeft(endsAt: Date) { */
+/* const remaining = endsAt.getTime() - Date.now(); */
+export function formatTimeLeft(remaining: number) {
   if (remaining <= 0) {
     return { label: "Ended", urgent: false };
   }
@@ -176,4 +177,11 @@ export function getInitials(name: string) {
     .join("")
     .slice(0, 2)
     .toUpperCase();
+}
+
+export function hasUpdatedUsername(
+  username: string | null | undefined,
+): boolean {
+  if (!username) return false;
+  return !PLACEHOLDER_USERNAME_PATTERN.test(username);
 }

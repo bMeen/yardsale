@@ -14,7 +14,6 @@ import {
   useAuction,
   useToggleWatchlist,
 } from "@/features/auction/hooks/useAuction";
-import { useAuctionBids } from "@/features/auction/hooks/useAuctionBid";
 import { useToast } from "@/shared/hooks/useToast";
 import { ArrowLeft, Heart } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -23,7 +22,7 @@ import { useNavigate } from "react-router";
 function Auction() {
   const navigate = useNavigate();
   const { isLoading, auction } = useAuction();
-  const { isLoading: isLoadingBids } = useAuctionBids();
+
   const { toggle } = useToggleWatchlist();
   const { toastSuccess } = useToast();
   const [optimisticWatchlist, setOptimisticWatchlist] = useState(
@@ -39,7 +38,7 @@ function Auction() {
     updateWatchlist();
   }, [auction]);
 
-  if (isLoading || isLoadingBids) return <SkeletonDetails />;
+  if (isLoading) return <SkeletonDetails />;
 
   if (!auction) return;
 
@@ -127,7 +126,10 @@ function Auction() {
             </div>
           </div>
 
-          <SellerInfo seller={auction?.seller} />
+          <SellerInfo
+            seller={auction?.seller}
+            starting_price={auction?.starting_price}
+          />
 
           <div className="border-y py-3">
             <AuctionState auction={auction} />

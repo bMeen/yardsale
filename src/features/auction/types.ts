@@ -117,11 +117,23 @@ export const schema = z.object({
     error: "Category is required",
   }),
 
-  starting_price: z
+  /*  starting_price: z
     .number({
       error: "Starting price is required",
     })
-    .positive("Starting price must be greater than 0"),
+    .positive("Starting price must be greater than 0"), */
+  starting_price: z
+    .union([z.string(), z.number()])
+    .transform((value) => {
+      if (value === "") return undefined;
+      return Number(value);
+    })
+    .refine((value) => value !== undefined, {
+      message: "Starting price is required",
+    })
+    .refine((value) => value > 0, {
+      message: "Starting price must be greater than 0",
+    }),
 
   starts_at: z.date({
     message: "Start date and time are required",
@@ -145,7 +157,11 @@ export const schema = z.object({
     path: ["ends_at"],
   }); */
 
-export type AuctionFormFields = z.infer<typeof schema>;
+export type FormFields = z.infer<typeof schema>;
+
+export type AuctionFormFields = Omit<FormFields, "starting_price"> & {
+  starting_price: string | number;
+};
 
 export type PlaceBid = Database["public"]["Functions"]["submit_bid"]["Args"];
 

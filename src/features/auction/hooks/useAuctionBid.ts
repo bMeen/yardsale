@@ -14,7 +14,9 @@ export function useAuctionBids() {
     queryFn: () => getAuctionBids({ id, page }),
   });
 
-  return { isLoading, bids };
+  const count = bids?.[0]?.total_count ?? 0;
+
+  return { isLoading, bids, count };
 }
 
 export function useBid() {

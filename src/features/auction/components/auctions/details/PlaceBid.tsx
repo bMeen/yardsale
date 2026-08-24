@@ -17,13 +17,12 @@ function PlaceBid({ auction }: { auction: AuctionDetails }) {
 
   const isMine = auction.seller.id === user?.profile?.id;
   const canBid = !isMine && auction.status === "ACTIVE";
-  const minimumBid =
-    auction.current_price > 0
-      ? auction.current_price / KOBO_RATE + MIN_BID_INCREMENT
-      : auction.starting_price / KOBO_RATE;
+
+  const currentBid = auction.current_price / KOBO_RATE;
+  const minimumBid = currentBid + MIN_BID_INCREMENT;
 
   const handleQuickBid = (increment: number) => {
-    setBidInput(String(minimumBid + increment));
+    setBidInput(String(currentBid + increment));
     setBidError(null);
   };
 
@@ -48,22 +47,17 @@ function PlaceBid({ auction }: { auction: AuctionDetails }) {
     <>
       {canBid && (
         <div className="space-y-3">
-          <div className="flex items-baseline justify-between">
-            <div>
-              <p className="text-muted-foreground text-xs tracking-wide uppercase md:text-sm">
-                {auction.current_price > 0 ? "Current bid" : "Starting price"}
-              </p>
-              <p className="text-primary font-mono text-3xl font-bold">
-                {formatAmount(auction.current_price || auction.starting_price)}
-              </p>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              {auction.bid_count} bids
+          <div>
+            <p className="text-muted-foreground text-xs tracking-wide uppercase md:text-sm">
+              Current Price
+            </p>
+            <p className="text-primary font-mono text-3xl font-bold">
+              {formatAmount(auction.current_price)}
             </p>
           </div>
 
           <div className="flex gap-2">
-            {[1000, 5000, 10000]
+            {[500, 1000, 5000, 10000]
               //.map((amount) => amount * KOBO_RATE)
               .map((inc) => (
                 <Button

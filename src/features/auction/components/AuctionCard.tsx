@@ -115,7 +115,7 @@ function AuctionCard({
           </div>
         )} */}
         {auction.status === "ACTIVE" && (
-          <div className="absolute bottom-2 left-2 rounded-full bg-white/60 px-2 py-0.5 backdrop-blur-sm">
+          <div className="absolute bottom-2 left-2 rounded-full bg-white/60 px-2.5 py-1.5 backdrop-blur-sm">
             <CountdownTimer endsAt={new Date(auction.ends_at)} />
           </div>
         )}

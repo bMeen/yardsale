@@ -1,11 +1,9 @@
 import { formatAmount } from "@/lib/utils";
-import { Clock } from "lucide-react";
-import { formatTimeLeft } from "@/lib/utils";
 import type { FullAuction } from "../../types";
 import { getImageUrl } from "../../apiAuctions";
+import CountdownTimer from "../CountdownTImer";
 
 function FeaturedCard({ auction }: { auction: FullAuction }) {
-  const { label, urgent } = formatTimeLeft(new Date(auction.ends_at));
   const imgSrc = getImageUrl(auction?.auction_images[0]?.storage_path);
 
   return (
@@ -38,7 +36,7 @@ function FeaturedCard({ auction }: { auction: FullAuction }) {
           </div>
           {auction.status === "ACTIVE" && (
             <div className="flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-1.5 backdrop-blur-sm">
-              <Clock
+              {/*  <Clock
                 size={11}
                 className={urgent ? "text-red-400" : "text-white/70"}
               />
@@ -46,7 +44,11 @@ function FeaturedCard({ auction }: { auction: FullAuction }) {
                 className={`font-mono text-xs font-medium ${urgent ? "text-red-400" : "text-white"}`}
               >
                 {label}
-              </span>
+              </span> */}
+              <CountdownTimer
+                endsAt={new Date(auction.ends_at)}
+                addPrefix={false}
+              />
             </div>
           )}
         </div>

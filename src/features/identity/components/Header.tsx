@@ -25,7 +25,7 @@ function Header() {
         </div>
 
         <div className="flex items-center gap-2.5">
-          <div className="hidden items-center gap-3 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-amber-700 md:flex">
+          <div className="bg-primary/10 text-primary border-primary/30 hidden items-center gap-3 rounded-full border px-4 py-2 md:flex">
             {isLoading ? (
               <>
                 <Skeleton className="h-5 w-7" />

@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
+//import { Button } from "@/components/ui/button";
+//import { useCancelBid } from "@/features/auction/hooks////////useAuctionBid";
 import UserAvatar from "@/components/UserAvatar";
 import { useAuction } from "@/features/auction/hooks/useAuction";
-import { useCancelBid } from "@/features/auction/hooks/useAuctionBid";
 import type { AuctionDetailsBid } from "@/features/auction/types";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { formatAmount, formatTime } from "@/lib/utils";
@@ -9,15 +9,15 @@ import { formatAmount, formatTime } from "@/lib/utils";
 function Bid({ bid }: { bid: AuctionDetailsBid }) {
   const { auction } = useAuction();
   const { user } = useCurrentUser();
-  const { isCancelling, cancel } = useCancelBid();
+  //const { isCancelling, cancel } = useCancelBid();
 
   const isMine = bid?.bidder.id === user?.profile?.id;
   const isCancelled = bid.status === "CANCELLED";
   const isLeading = bid.id === auction?.highest_bid?.id;
 
-  function handleCancel() {
+  /*   function handleCancel() {
     cancel({ p_bid_id: bid.id });
-  }
+  } */
 
   return (
     <li
@@ -54,7 +54,7 @@ function Bid({ bid }: { bid: AuctionDetailsBid }) {
         >
           {formatAmount(bid.amount)}
         </p>
-        {isMine &&
+        {/* {isMine &&
           !isLeading &&
           !isCancelled &&
           auction?.status === "ACTIVE" && (
@@ -67,7 +67,7 @@ function Bid({ bid }: { bid: AuctionDetailsBid }) {
             >
               Cancel
             </Button>
-          )}
+          )} */}
       </div>
     </li>
   );

@@ -13,11 +13,15 @@ import { useSearchParams } from "react-router";
 interface Props {
   currentPage: number;
   totalPages: number;
+  setPage?: (page: number) => void;
 }
 
-export default function CustomPagination({ currentPage, totalPages }: Props) {
+export default function CustomPagination({
+  currentPage,
+  totalPages,
+  setPage,
+}: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const pages = usePagination({
     currentPage,
     totalPages,
@@ -25,14 +29,20 @@ export default function CustomPagination({ currentPage, totalPages }: Props) {
 
   const navigateToPage = (page: number) => {
     if (page < 1 || page > totalPages) return;
-    const params = new URLSearchParams(searchParams);
 
-    if (page === 1) {
-      params.delete("page");
+    if (setPage) {
+      setPage?.(page);
+      return;
     } else {
-      params.set("page", page.toString());
+      const params = new URLSearchParams(searchParams);
+
+      if (page === 1) {
+        params.delete("page");
+      } else {
+        params.set("page", page.toString());
+      }
+      setSearchParams(params);
     }
-    setSearchParams(params);
   };
 
   if (totalPages <= 1) return null;

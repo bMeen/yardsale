@@ -5,12 +5,11 @@ import TransactionCardSkeleton from "@/features/wallet/components/TransactionCar
 import { useWalletActivity } from "@/features/wallet/hooks/useWalletActivity";
 import { getPagination } from "@/lib/utils";
 import { ReceiptText } from "lucide-react";
-import { useSearchParams } from "react-router";
+import { useState } from "react";
 
 function Transactions() {
-  const { transactions, isLoading, count } = useWalletActivity();
-  const [searchParams] = useSearchParams();
-  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+  const [page, setPage] = useState(1);
+  const { transactions, isLoading, count } = useWalletActivity(page);
   const { page: currentPage, totalPages } = getPagination(page, count);
 
   if (isLoading)
@@ -39,7 +38,11 @@ function Transactions() {
         ))}
       </ul>
 
-      <CustomPagination currentPage={currentPage} totalPages={totalPages} />
+      <CustomPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setPage={setPage}
+      />
     </div>
   );
 }

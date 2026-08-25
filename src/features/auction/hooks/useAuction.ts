@@ -4,11 +4,13 @@ import {
   cancelAuction,
   createAuction,
   getAuction,
+  subscribeToAuction,
   toggleWatchlist,
   updateAuction,
 } from "../apiAuctions";
 import { useToast } from "@/shared/hooks/useToast";
 import type { PostgrestError } from "@supabase/supabase-js";
+import { useEffect } from "react";
 
 export function useAuction() {
   const { auctionId: id } = useParams();
@@ -22,18 +24,10 @@ export function useAuction() {
 }
 
 export function useToggleWatchlist() {
-  const queryClient = useQueryClient();
-  const { auctionId: id } = useParams();
   const { toastError } = useToast();
 
   const { mutate: toggle } = useMutation({
     mutationFn: toggleWatchlist,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["auction", id],
-      });
-    },
-
     onError: (error: PostgrestError) => {
       toastError(error);
     },
@@ -62,17 +56,12 @@ export function useCreateAuction() {
 }
 
 export function useUpdateAuction() {
-  const queryClient = useQueryClient();
-  const { auctionId: id } = useParams();
   const { toastError, toastSuccess } = useToast();
 
   const { isPending: isUpdating, mutate: update } = useMutation({
     mutationFn: updateAuction,
     onSuccess: () => {
       toastSuccess("Success", "Auction Updated Successfully");
-      queryClient.invalidateQueries({
-        queryKey: ["auction", id],
-      });
     },
 
     onError: (error: PostgrestError) => {
@@ -100,4 +89,14 @@ export function useCancelAuction() {
   });
 
   return { isPending, cancel };
+}
+
+export function useAuctionRealtime() {
+  const { auctionId: id } = useParams();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!id) return;
+    return subscribeToAuction(id, queryClient);
+  }, [id, queryClient]);
 }

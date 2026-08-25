@@ -1,11 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router";
 import { getWalletActivity } from "../apiWallet";
 
-export function useWalletActivity() {
-  const [searchParams] = useSearchParams();
-  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
-
+export function useWalletActivity(page: number) {
   const {
     isLoading,
     error,

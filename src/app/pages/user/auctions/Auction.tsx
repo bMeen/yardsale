@@ -12,6 +12,7 @@ import SkeletonDetails from "@/features/auction/components/auctions/details/Skel
 import Status from "@/features/auction/components/auctions/details/Status";
 import {
   useAuction,
+  useAuctionRealtime,
   useToggleWatchlist,
 } from "@/features/auction/hooks/useAuction";
 import { useToast } from "@/shared/hooks/useToast";
@@ -21,6 +22,7 @@ import { useNavigate } from "react-router";
 
 function Auction() {
   const navigate = useNavigate();
+  useAuctionRealtime();
   const { isLoading, auction } = useAuction();
 
   const { toggle } = useToggleWatchlist();
@@ -89,21 +91,23 @@ function Auction() {
             <Title>{auction?.title}</Title>
           </div>
 
-          <Button
-            onClick={handleToggleWatchlist}
-            size="icon-lg"
-            variant="ghost"
-            className="cursor-pointer"
-          >
-            <Heart
-              className={
-                optimisticWatchlist
-                  ? "fill-red-500 text-red-500"
-                  : "text-muted-foreground"
-              }
-              size={20}
-            />
-          </Button>
+          {(auction.status === "ACTIVE" || auction.status === "SCHEDULED") && (
+            <Button
+              onClick={handleToggleWatchlist}
+              size="icon-lg"
+              variant="ghost"
+              className="cursor-pointer"
+            >
+              <Heart
+                className={
+                  optimisticWatchlist
+                    ? "fill-red-500 text-red-500"
+                    : "text-muted-foreground"
+                }
+                size={20}
+              />
+            </Button>
+          )}
 
           <SellerMenu auction={auction} />
         </div>

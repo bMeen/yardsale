@@ -17,6 +17,7 @@ import {
 } from "./types";
 import { getRange, validateImage } from "@/lib/utils";
 import { getCurrentUserApi } from "../auth/apiAuth";
+import type { QueryClient } from "@tanstack/react-query";
 
 const AUCTION_FULL_QUERY = `*, auction_images(storage_path, display_order), highest_bid:bids!fk_auctions_highest_bid(
       id,
@@ -209,4 +210,58 @@ export async function cancelAuction(payload: CancelAuction) {
   const { error } = await supabase.rpc("cancel_auction", payload);
 
   if (error) throw error;
+}
+
+export function subscribeToAuction(
+  auctionId: string,
+  queryClient: QueryClient,
+) {
+  const channel = supabase
+    .channel(`auction-detail:${auctionId}`)
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "auctions",
+        filter: `id=eq.${auctionId}`,
+      },
+      () => {
+        queryClient.invalidateQueries({ queryKey: ["auction", auctionId] });
+      },
+    )
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "bids",
+        filter: `auction_id=eq.${auctionId}`,
+      },
+      () => {
+        queryClient.invalidateQueries({ queryKey: ["bids", auctionId] });
+      },
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}
+
+export function subscribeToAuctions(queryClient: QueryClient) {
+  const channel = supabase
+    .channel("auction-list")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "auctions" },
+      () => {
+        queryClient.invalidateQueries({ queryKey: ["auctions"] });
+      },
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
 }

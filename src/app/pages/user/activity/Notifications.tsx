@@ -7,12 +7,11 @@ import NotificationCardSkeleton from "@/features/notification/components/Notific
 import { useNotifications } from "@/features/notification/hooks/useNotifications";
 import { getPagination, groupNotifications } from "@/lib/utils";
 import { Bell } from "lucide-react";
-import { useSearchParams } from "react-router";
+import { useState } from "react";
 
 function Notifications() {
-  const { isLoading, notifications, count } = useNotifications();
-  const [searchParams] = useSearchParams();
-  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+  const [page, setPage] = useState(1);
+  const { isLoading, notifications, count } = useNotifications(page);
   const { page: currentPage, totalPages } = getPagination(page, count!);
 
   if (isLoading)
@@ -59,7 +58,11 @@ function Notifications() {
         </div>
       ))}
 
-      <CustomPagination currentPage={currentPage} totalPages={totalPages} />
+      <CustomPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setPage={setPage}
+      />
     </div>
   );
 }

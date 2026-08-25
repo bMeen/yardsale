@@ -3,12 +3,16 @@ import { Modal } from "@/components/custom-modal/Modal";
 import Sidebar from "@/components/Sidebar";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import EditProfile from "@/features/identity/components/EditProfile";
+import { useNotificationsRealtime } from "@/features/notification/hooks/useNotifications";
+import { useWalletRealtime } from "@/features/wallet/hooks/useWalletAccount";
 import { hasUpdatedUsername } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 
 function UserLayout() {
   const { user } = useCurrentUser();
+  useNotificationsRealtime();
+  useWalletRealtime();
   const username = user?.profile?.username;
   const [openUpdateUsername, setOpenUpdateUsername] = useState(false);
 

@@ -1,5 +1,5 @@
 import EmptyState from "@/components/EmptyState";
-import { useAuctions } from "../../hooks/useAuctions";
+import { useAuctions, useAuctionsRealtime } from "../../hooks/useAuctions";
 import AuctionCardSkeleton from "../AuctionCardSkeleton";
 import { Package } from "lucide-react";
 import AuctionCard from "../AuctionCard";
@@ -9,6 +9,7 @@ import { useSearchParams } from "react-router";
 import StatusFilter from "./StatusFilter";
 
 function AuctionList() {
+  useAuctionsRealtime();
   const { isLoading, auctions, count } = useAuctions();
   const [searchParams] = useSearchParams();
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));

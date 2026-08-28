@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.17"
   }
   graphql_public: {
     Tables: {
@@ -320,9 +320,11 @@ export type Database = {
           full_name: string
           id: string
           role: Database["public"]["Enums"]["user_role"]
+          sold_count: number
           status: Database["public"]["Enums"]["profile_status"]
           updated_at: string
           username: string
+          won_count: number
         }
         Insert: {
           avatar_url?: string | null
@@ -330,9 +332,11 @@ export type Database = {
           full_name: string
           id: string
           role?: Database["public"]["Enums"]["user_role"]
+          sold_count?: number
           status?: Database["public"]["Enums"]["profile_status"]
           updated_at?: string
           username: string
+          won_count?: number
         }
         Update: {
           avatar_url?: string | null
@@ -340,9 +344,11 @@ export type Database = {
           full_name?: string
           id?: string
           role?: Database["public"]["Enums"]["user_role"]
+          sold_count?: number
           status?: Database["public"]["Enums"]["profile_status"]
           updated_at?: string
           username?: string
+          won_count?: number
         }
         Relationships: []
       }
@@ -511,7 +517,10 @@ export type Database = {
         Args: { p_winning_bid_kobo: number }
         Returns: number
       }
-      cancel_auction: { Args: { p_auction_id: string }; Returns: undefined }
+      cancel_auction: {
+        Args: { p_auction_id: string; p_reason?: string }
+        Returns: undefined
+      }
       cancel_bid: { Args: { p_bid_id: string }; Returns: undefined }
       close_auction: { Args: { p_auction_id: string }; Returns: undefined }
       create_auction: {
@@ -579,6 +588,19 @@ export type Database = {
       }
       format_naira: { Args: { p_amount_kobo: number }; Returns: string }
       get_admin_dashboard_stats: { Args: never; Returns: Json }
+      get_all_auctions: {
+        Args: {
+          p_category?: Database["public"]["Enums"]["auction_category"]
+          p_limit?: number
+          p_page?: number
+          p_search?: string
+          p_status?: Database["public"]["Enums"]["auction_status"]
+        }
+        Returns: {
+          auction: Json
+          total_count: number
+        }[]
+      }
       get_auction_bids: {
         Args: { p_auction_id: string; p_limit?: number; p_page?: number }
         Returns: {
@@ -591,6 +613,19 @@ export type Database = {
         }[]
       }
       get_auction_detail: { Args: { p_auction_id: string }; Returns: Json }
+      get_my_auctions: {
+        Args: {
+          p_category?: Database["public"]["Enums"]["auction_category"]
+          p_limit?: number
+          p_page?: number
+          p_search?: string
+          p_status?: Database["public"]["Enums"]["auction_status"]
+        }
+        Returns: {
+          auction: Json
+          total_count: number
+        }[]
+      }
       get_participating_auctions: {
         Args: {
           p_category?: Database["public"]["Enums"]["auction_category"]
@@ -605,6 +640,18 @@ export type Database = {
         }[]
       }
       get_platform_account_id: { Args: never; Returns: string }
+      get_sold_auctions: {
+        Args: {
+          p_category?: Database["public"]["Enums"]["auction_category"]
+          p_limit?: number
+          p_page?: number
+          p_search?: string
+        }
+        Returns: {
+          auction: Json
+          total_count: number
+        }[]
+      }
       get_system_account_id: { Args: never; Returns: string }
       get_wallet_activity: {
         Args: { p_limit?: number; p_page?: number }
@@ -626,7 +673,18 @@ export type Database = {
           p_limit?: number
           p_page?: number
           p_search?: string
-          p_status?: Database["public"]["Enums"]["auction_status"]
+        }
+        Returns: {
+          auction: Json
+          total_count: number
+        }[]
+      }
+      get_won_auctions: {
+        Args: {
+          p_category?: Database["public"]["Enums"]["auction_category"]
+          p_limit?: number
+          p_page?: number
+          p_search?: string
         }
         Returns: {
           auction: Json
@@ -787,6 +845,8 @@ export type Database = {
         | "ACCOUNT_SUSPENDED"
         | "ACCOUNT_REACTIVATED"
         | "ACCOUNT_DEACTIVATED"
+        | "SELLER_CANCELLED_AUCTION"
+        | "AUCTION_TIME_CHANGED"
       profile_status: "ACTIVE" | "SUSPENDED" | "DEACTIVATED"
       reference_type: "USER" | "AUCTION" | "BID" | "WALLET" | "SYSTEM"
       user_role: "USER" | "ADMIN"
@@ -966,6 +1026,8 @@ export const Constants = {
         "ACCOUNT_SUSPENDED",
         "ACCOUNT_REACTIVATED",
         "ACCOUNT_DEACTIVATED",
+        "SELLER_CANCELLED_AUCTION",
+        "AUCTION_TIME_CHANGED",
       ],
       profile_status: ["ACTIVE", "SUSPENDED", "DEACTIVATED"],
       reference_type: ["USER", "AUCTION", "BID", "WALLET", "SYSTEM"],

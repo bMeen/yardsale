@@ -6,6 +6,7 @@ import Categories from "@/features/auction/components/Categories";
 import { AUCTIONTABS } from "@/shared/constants";
 import AuctionList from "@/features/auction/components/auctions/AuctionList";
 import SearchInput from "@/features/auction/components/auctions/SearchInput";
+import StatusFilter from "@/features/auction/components/auctions/StatusFilter";
 
 function Auctions() {
   return (
@@ -19,6 +20,7 @@ function Auctions() {
       </PageHeader>
       <AuctionTabs tabs={AUCTIONTABS} />
 
+      <StatusFilter />
       <AuctionList />
     </PageContainer>
   );

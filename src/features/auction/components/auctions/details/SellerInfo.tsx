@@ -1,7 +1,7 @@
 import UserAvatar from "@/components/UserAvatar";
 import type { User } from "@/features/auction/types";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { formatAmount } from "@/lib/utils";
+import { formatAmount, getInitials } from "@/lib/utils";
 
 function SellerInfo({
   seller,
@@ -18,11 +18,11 @@ function SellerInfo({
       <div className="flex items-center gap-2">
         <UserAvatar
           url={seller.avatar_url || ""}
-          fallback={seller.username[0]}
+          fallback={getInitials(seller.full_name)}
         />
 
         <div className="min-w-0 flex-1">
-          {/* <p className="text-sm font-semibold">{seller.}</p> */}
+          <p className="text-sm font-semibold">{seller.full_name}</p>
           <p className="text-muted-foreground font-mono text-xs">
             @{seller.username}
           </p>

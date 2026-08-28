@@ -1,4 +1,5 @@
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { getInitials } from "@/lib/utils";
 
 function ProfileInfo() {
   const { user } = useCurrentUser();
@@ -14,12 +15,7 @@ function ProfileInfo() {
           />
         ) : (
           <span className="text-muted-foreground text-xl font-semibold md:text-3xl">
-            {user?.profile.full_name
-              .split(" ")
-              .map((name) => name[0])
-              .join("")
-              .slice(0, 2)
-              .toUpperCase()}
+            {getInitials(user?.profile.full_name ?? "")}
           </span>
         )}
       </div>

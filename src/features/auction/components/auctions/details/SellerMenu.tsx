@@ -20,9 +20,7 @@ function SellerMenu({ auction }: { auction: AuctionDetails }) {
 
   const isMine = auction.seller.id === user?.profile?.id;
   const canShowSellerMenu =
-    isMine &&
-    auction.bid_count === 0 &&
-    (auction.status === "SCHEDULED" || auction.status === "ACTIVE");
+    isMine && (auction.status === "SCHEDULED" || auction.status === "ACTIVE");
 
   if (!canShowSellerMenu) return;
 

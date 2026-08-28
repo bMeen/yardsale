@@ -150,10 +150,23 @@ function AuctionForm({
 
     if (isEditSession) {
       if (!auction?.id) return;
-      update(
-        { ...editPayload, p_auction_id: auction?.id },
-        { onSuccess: () => close?.(), onError: () => close?.() },
-      );
+
+      const editValues =
+        auction.status === "ACTIVE"
+          ? {
+              p_ends_at: values.ends_at.toISOString(),
+              p_auction_id: auction.id,
+            }
+          : {
+              ...editPayload,
+              p_auction_id: auction.id,
+            };
+
+      update(editValues, {
+        onSuccess: () => close?.(),
+        onError: () => close?.(),
+      });
+
       return;
     }
 

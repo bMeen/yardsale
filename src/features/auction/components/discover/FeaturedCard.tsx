@@ -2,12 +2,22 @@ import { formatAmount } from "@/lib/utils";
 import type { FullAuction } from "../../types";
 import { getImageUrl } from "../../apiAuctions";
 import CountdownTimer from "../CountdownTImer";
+import { useNavigate } from "react-router";
 
 function FeaturedCard({ auction }: { auction: FullAuction }) {
+  const navigate = useNavigate();
+
   const imgSrc = getImageUrl(auction?.auction_images[0]?.storage_path);
 
+  function goToAuction() {
+    navigate(`/auctions/${auction.id}`);
+  }
+
   return (
-    <div className="group relative h-80 w-68 shrink-0 cursor-pointer overflow-hidden rounded-2xl">
+    <div
+      className="group relative h-80 w-68 shrink-0 cursor-pointer overflow-hidden rounded-2xl"
+      onClick={goToAuction}
+    >
       {imgSrc && (
         <img
           src={imgSrc}

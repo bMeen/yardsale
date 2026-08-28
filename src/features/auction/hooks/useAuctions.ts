@@ -1,12 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAuctions, subscribeToAuctions } from "../apiAuctions";
 import { useSearchParams } from "react-router";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import type { AuctionListType, AuctionStatus, Category } from "../types";
 import { useEffect } from "react";
 
 export function useAuctions() {
-  const { user } = useCurrentUser();
   const [searchParams] = useSearchParams();
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
   const category = (searchParams.get("category") || "ALL") as Category;
@@ -27,7 +25,6 @@ export function useAuctions() {
         category,
         search,
         status,
-        user_id: user?.profile.id,
       }),
   });
 

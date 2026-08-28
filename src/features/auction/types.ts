@@ -17,7 +17,6 @@ export const CategoryEnum = {
 } as const;
 
 export type Category = (typeof CategoryEnum)[keyof typeof CategoryEnum] | "ALL";
-//export type Category = Database["public"]["Enums"]["auction_category"] | "ALL";
 export type AuctionStatus = Database["public"]["Enums"]["auction_status"];
 export type AuctionListType =
   "ALL" | "MY_AUCTIONS" | "PARTICIPATING" | "WATCHLIST";
@@ -28,11 +27,12 @@ export type AuctionImages =
 export type Bid = Database["public"]["Tables"]["bids"]["Row"];
 export type RPC = keyof Database["public"]["Functions"];
 
-export type rpcType = Exclude<AuctionListType, "MY_AUCTIONS" | "ALL">;
-export const RPC_BY_TYPE: Partial<Record<rpcType, RPC>> = {
+export const RPC_BY_TYPE = {
+  ALL: "get_all_auctions",
+  MY_AUCTIONS: "get_my_auctions",
   PARTICIPATING: "get_participating_auctions",
   WATCHLIST: "get_watchlist_auctions",
-};
+} as const satisfies Record<AuctionListType, RPC>;
 
 export type FullAuction = Auction & {
   auction_images: AuctionImages[];
@@ -44,7 +44,6 @@ export interface GetAuctionsParams {
   category?: Category;
   status?: AuctionStatus;
   search?: string;
-  user_id?: string;
 }
 
 export type GetAuctionsResponse = {
@@ -59,7 +58,10 @@ export type VisibleStatus = Exclude<AuctionStatus, "CANCELLED">;
 
 export type AuctionBid = Pick<Bid, "id" | "amount" | "status" | "created_at">;
 export type Image = Pick<AuctionImages, "display_order" | "storage_path">;
-export type User = Pick<Profile, "id" | "username" | "avatar_url">;
+export type User = Pick<
+  Profile,
+  "id" | "username" | "avatar_url" | "full_name"
+>;
 export type HighestBid = Pick<Bid, "id" | "amount" | "created_at"> & {
   bidder: User;
 };

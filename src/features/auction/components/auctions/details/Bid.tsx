@@ -9,12 +9,12 @@ import { formatAmount, formatTime } from "@/lib/utils";
 function Bid({ bid }: { bid: AuctionDetailsBid }) {
   const { auction } = useAuction();
   const { user } = useCurrentUser();
-  //const { isCancelling, cancel } = useCancelBid();
 
   const isMine = bid?.bidder.id === user?.profile?.id;
-  const isCancelled = bid.status === "CANCELLED";
   const isLeading = bid.id === auction?.highest_bid?.id;
 
+  //const isCancelled = bid.status === "CANCELLED";
+  //const { isCancelling, cancel } = useCancelBid();
   /*   function handleCancel() {
     cancel({ p_bid_id: bid.id });
   } */
@@ -38,11 +38,11 @@ function Bid({ bid }: { bid: AuctionDetailsBid }) {
               Leading
             </span>
           )}
-          {isCancelled && (
+          {/* {isCancelled && (
             <span className="bg-destructive/10 text-destructive rounded-full px-1.5 py-0.5 text-[10px] font-semibold">
               Cancelled
             </span>
-          )}
+          )} */}
         </div>
         <p className="text-muted-foreground text-xs">
           {formatTime(new Date(bid.created_at))}

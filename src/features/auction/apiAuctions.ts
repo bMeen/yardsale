@@ -11,11 +11,10 @@ import {
   type GetAuctionsParams,
   type GetAuctionsResponse,
   type PlaceBid,
-  type rpcType,
   type ToggleWatchlist,
   type UpdateAuction,
 } from "./types";
-import { getRange, validateImage } from "@/lib/utils";
+import { validateImage } from "@/lib/utils";
 import { getCurrentUserApi } from "../auth/apiAuth";
 import type { QueryClient } from "@tanstack/react-query";
 
@@ -44,65 +43,29 @@ export async function getAuctions({
   category = "ALL",
   status,
   search,
-  user_id,
 }: GetAuctionsParams): Promise<GetAuctionsResponse> {
   const trimmedSearch = search?.trim() || undefined;
 
-  const rpcName = RPC_BY_TYPE[type as rpcType];
-  if (rpcName) {
-    const { data, error } = await supabase.rpc(rpcName, {
-      p_category: category !== "ALL" ? category : undefined,
-      p_search: trimmedSearch ?? undefined,
-      p_page: page,
-      p_limit: PER_PAGE,
-      p_status: status,
-    });
+  const params: Record<string, unknown> = {
+    p_category: category !== "ALL" ? category : null,
+    p_search: trimmedSearch ?? null,
+    p_page: page,
+    p_limit: PER_PAGE,
+  };
 
-    if (error) throw error;
-
-    return {
-      data: data
-        ? data.map((row) => row.auction as unknown as FullAuction)
-        : null,
-      count: data?.[0]?.total_count ?? 0,
-    };
+  if (type !== "WATCHLIST") {
+    params.p_status = status ?? undefined;
   }
 
-  const { from, to } = getRange(page);
-
-  let query = supabase.from("auctions").select(AUCTION_FULL_QUERY, {
-    count: "exact",
-  });
-
-  if (category && category !== "ALL") {
-    query = query.eq("category", category);
-  }
-
-  if (status) {
-    query = query.eq("status", status);
-  } else {
-    query = query.neq("status", "CANCELLED");
-  }
-
-  if (trimmedSearch) {
-    query = query.ilike("title", `%${trimmedSearch}%`);
-  }
-
-  if (type === "MY_AUCTIONS") {
-    if (!user_id) throw new Error("Not authenticated");
-
-    query = query.eq("seller_id", user_id);
-  }
-
-  const { data, error, count } = await query
-    .range(from, to)
-    .order("created_at", { ascending: false });
+  const { data, error } = await supabase.rpc(RPC_BY_TYPE[type], params);
 
   if (error) throw error;
 
   return {
-    data: data as FullAuction[] | null,
-    count: count ?? 0,
+    data: data
+      ? data.map((row) => row.auction as unknown as FullAuction)
+      : null,
+    count: data?.[0]?.total_count ?? 0,
   };
 }
 

@@ -28,6 +28,7 @@ import {
   RefreshCcw,
   Percent,
   BanknoteArrowDownIcon,
+  Clock3,
 } from "lucide-react";
 import type {
   WalletEntryType,
@@ -88,8 +89,8 @@ export const AUCTIONSTATUSOPTIONS: {
   { label: "Status", value: null },
   { label: "Scheduled", value: "SCHEDULED" },
   { label: "Active", value: "ACTIVE" },
-  { label: "Ended", value: "ENDED" },
   { label: "Settled", value: "SETTLED" },
+  /*  { label: "Ended", value: "ENDED" }, */
   //{ label: "Cancelled", value: "CANCELLED" },
 ];
 
@@ -184,6 +185,18 @@ export const NOTIFICATION_CONFIG: Record<NotificationType, NotificationConfig> =
       icon: CheckCircle2,
       title: "Account Reactivated",
       className: "text-emerald-600 bg-emerald-50",
+    },
+
+    SELLER_CANCELLED_AUCTION: {
+      icon: XCircle,
+      title: "Auction Cancelled",
+      className: "text-red-600 bg-red-50",
+    },
+
+    AUCTION_TIME_CHANGED: {
+      icon: Clock3,
+      title: "Auction Time Changed",
+      className: "text-amber-600 bg-amber-50",
     },
   };
 

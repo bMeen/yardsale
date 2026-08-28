@@ -28,7 +28,7 @@ function FeaturedCard({ auction }: { auction: FullAuction }) {
       <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/20 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-4">
         <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-medium text-white/70 backdrop-blur-sm">
-          {auction?.category}
+          {auction?.category.replaceAll("_", " ")}
         </span>
         <h3 className="font-display mt-2 line-clamp-2 text-xl leading-tight font-bold text-white">
           {auction?.title}

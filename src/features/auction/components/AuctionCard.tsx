@@ -54,7 +54,7 @@ function AuctionCard({
             </span>
           </div>
           <p className="text-muted-foreground mt-0.5 text-xs">
-            {auction.category}
+            {auction.category.replaceAll("_", "")}
           </p>
           <div className="mt-2 flex items-center justify-between">
             <div>
@@ -122,7 +122,7 @@ function AuctionCard({
       </div>
       <div className="p-3">
         <p className="text-muted-foreground text-[10px] tracking-wide uppercase">
-          {auction.category}
+          {auction.category.replaceAll("_", " ")}
         </p>
         <h3 className="mt-0.5 line-clamp-2 text-sm leading-snug font-medium">
           {auction.title}

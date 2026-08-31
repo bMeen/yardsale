@@ -57,7 +57,7 @@ function PlaceBid({ auction }: { auction: AuctionDetails }) {
           </div>
 
           <div className="flex gap-2">
-            {[500, 1000, 5000, 10000]
+            {[1000, 2000, 5000, 10000]
               //.map((amount) => amount * KOBO_RATE)
               .map((inc) => (
                 <Button

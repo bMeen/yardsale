@@ -25,9 +25,8 @@ This document is a plain-language overview for anyone reviewing or testing the a
 
 ## How money works (the short version)
 
-- All amounts are shown in Naira (₦), stored internally as whole kobo — no rounding surprises.
-- Listing an auction costs a small flat fee.
-- Winning an auction moves money from your **reserved** balance to the seller, minus a small platform fee.
+- Listing an auction costs a flat fee ₦300
+- Winning an auction moves money from your **reserved** balance to the seller, minus a 3% platform fee.
 - Placing a bid doesn't spend money immediately — it **reserves** it. If you get outbid, the reservation is released back to your available balance automatically.
 - Every single wallet movement (fees, reservations, releases, payouts) is logged and viewable in your wallet activity feed — nothing happens silently.
 

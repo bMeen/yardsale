@@ -9,7 +9,7 @@ function Hero() {
       <section className="relative overflow-hidden">
         <BackgroundGlow />
         <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-28">
-          <div className="relative flex min-h-155 items-center justify-center">
+          <div className="relative flex min-h-150 items-center justify-center">
             <ConfettiLayer />
             <Cards />
             <Headline />

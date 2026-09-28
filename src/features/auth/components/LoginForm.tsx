@@ -21,10 +21,8 @@ function LoginForm() {
     formState: { isSubmitting },
   } = useForm<LoginFields>({
     defaultValues: {
-      /*  email: "",
-      password: "", */
-      email: "seed_u01@yardsale.dev",
-      password: "YardSaleSeed!2026",
+      email: "",
+      password: "",
     },
     resolver: zodResolver(schema),
   });

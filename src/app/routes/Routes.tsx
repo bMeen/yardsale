@@ -18,7 +18,6 @@ const Auctions = lazy(() => import("../pages/user/auctions/Auctions"));
 const Auction = lazy(() => import("../pages/user/auctions/Auction"));
 const Create = lazy(() => import("../pages/user/Create"));
 const Activity = lazy(() => import("../pages/user/profile/Activity"));
-/* const Edit = lazy(() => import("../pages/user/auctions/Edit")); */
 const Notifications = lazy(
   () => import("../pages/user/activity/Notifications"),
 );

@@ -13,8 +13,7 @@ const usernameSchema = z.object({
     .string()
     .trim()
     .min(3, "Minimum 3 characters")
-    .max(30, "Maximum 30 characters")
-    .regex(/^[a-z0-9_]+$/, "Lowercase letters, numbers, and underscores only"),
+    .max(30, "Maximum 30 characters"),
 });
 
 const editProfileSchema = z.object({
@@ -23,8 +22,7 @@ const editProfileSchema = z.object({
     .string()
     .trim()
     .min(3, "Minimum 3 characters")
-    .max(30, "Maximum 30 characters")
-    .regex(/^[a-z0-9_]+$/, "Lowercase letters, numbers, and underscores only"),
+    .max(30, "Maximum 30 characters"),
 });
 
 type FormFields = {

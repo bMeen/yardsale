@@ -1,20 +1,34 @@
 import Loader from "@/components/Loader";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import type { Role } from "@/features/identity/types";
 import { useEffect, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 
-function UserProtectedRoute({ children }: { children: ReactNode }) {
+function UserProtectedRoute({
+  children,
+  role,
+}: {
+  children: ReactNode;
+  role: Role;
+}) {
   const navigate = useNavigate();
   const { user, isLoading } = useCurrentUser();
-  const isUser = user?.profile.role === "USER";
+  const isAuthenticated = user?.isAuthenticated;
+  const hasRequiredRole = user?.profile.role === role;
 
   useEffect(() => {
-    if (!user?.isAuthenticated && !isLoading && !isUser) navigate("/");
-  }, [user, isLoading, navigate, isUser]);
+    if (!isLoading && (!isAuthenticated || !hasRequiredRole)) {
+      navigate("/", { replace: true });
+    }
+  }, [isLoading, isAuthenticated, hasRequiredRole, navigate]);
 
   if (isLoading) return <Loader />;
 
-  if (user?.isAuthenticated && isUser) return children;
+  if (!isAuthenticated || !hasRequiredRole) {
+    return null;
+  }
+
+  return children;
 }
 
 export default UserProtectedRoute;

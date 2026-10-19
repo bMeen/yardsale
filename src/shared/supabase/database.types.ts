@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.17"
+    PostgrestVersion: "14.5"
   }
   graphql_public: {
     Tables: {
@@ -505,6 +505,26 @@ export type Database = {
         }
         Returns: undefined
       }
+      admin_update_system_auction: {
+        Args: {
+          p_auction_id: string
+          p_category?: Database["public"]["Enums"]["auction_category"]
+          p_description?: string
+          p_ends_at?: string
+          p_starting_price?: number
+          p_starts_at?: string
+          p_title?: string
+        }
+        Returns: undefined
+      }
+      assert_admin_if: {
+        Args: { p_condition: boolean; p_message?: string }
+        Returns: undefined
+      }
+      assert_admin_or_self: {
+        Args: { p_target_profile_id: string }
+        Returns: undefined
+      }
       assert_profile_active: {
         Args: { p_profile_id: string }
         Returns: undefined
@@ -587,10 +607,61 @@ export type Database = {
         }
       }
       format_naira: { Args: { p_amount_kobo: number }; Returns: string }
+      get_admin_audit_log: {
+        Args: {
+          p_action_type?: Database["public"]["Enums"]["admin_action_type"]
+          p_bucket?: string
+          p_end_date?: string
+          p_limit?: number
+          p_page?: number
+          p_reference_type?: Database["public"]["Enums"]["reference_type"]
+          p_start_date?: string
+        }
+        Returns: {
+          action_type: Database["public"]["Enums"]["admin_action_type"]
+          admin: Json
+          created_at: string
+          id: string
+          reason: string
+          reference_id: string
+          reference_type: Database["public"]["Enums"]["reference_type"]
+          target: Json
+          total_count: number
+        }[]
+      }
       get_admin_dashboard_stats: { Args: never; Returns: Json }
+      get_admin_platform_ledger: {
+        Args: {
+          p_bucket?: string
+          p_end_date?: string
+          p_limit?: number
+          p_page?: number
+          p_search?: string
+          p_start_date?: string
+        }
+        Returns: {
+          amount: number
+          auction: Json
+          created_at: string
+          description: string
+          entry_type: Database["public"]["Enums"]["wallet_entry_type"]
+          id: string
+          is_system_auction: boolean
+          total_count: number
+        }[]
+      }
+      get_admin_revenue_report: {
+        Args: { p_bucket?: string; p_end_date?: string; p_start_date?: string }
+        Returns: Json
+      }
+      get_admin_user_detail: {
+        Args: { target_profile_id: string }
+        Returns: Json
+      }
       get_all_auctions: {
         Args: {
           p_category?: Database["public"]["Enums"]["auction_category"]
+          p_include_cancelled?: boolean
           p_limit?: number
           p_page?: number
           p_search?: string
@@ -620,6 +691,7 @@ export type Database = {
           p_page?: number
           p_search?: string
           p_status?: Database["public"]["Enums"]["auction_status"]
+          p_target_profile_id?: string
         }
         Returns: {
           auction: Json
@@ -754,6 +826,13 @@ export type Database = {
         Returns: string
       }
       reset_wallet: { Args: never; Returns: undefined }
+      resolve_admin_report_range: {
+        Args: { p_bucket: string; p_end_date: string; p_start_date: string }
+        Returns: {
+          range_end: string
+          range_start: string
+        }[]
+      }
       send_watchlist_reminders: { Args: never; Returns: undefined }
       settle_auction: { Args: { p_auction_id: string }; Returns: undefined }
       submit_bid: {
@@ -874,12 +953,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -903,11 +982,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -928,11 +1007,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -953,11 +1032,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -970,11 +1049,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }

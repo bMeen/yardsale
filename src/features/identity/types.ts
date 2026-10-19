@@ -2,6 +2,7 @@ import type { Database } from "@/shared/supabase/database.types";
 import type { RPC } from "../auction/types";
 
 export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+export type Role = Profile["role"];
 export type UpdateProfile =
   Database["public"]["Functions"]["update_profile"]["Args"];
 

@@ -13,7 +13,7 @@ export function useLogin() {
     mutationFn: ({ email, password }: LoginFields) =>
       loginApi({ email, password }),
     onSuccess: () => {
-      navigate("/discover", { replace: true });
+      navigate("/admin", { replace: true });
     },
     onError: (error: PostgrestError) => {
       toastError(error);

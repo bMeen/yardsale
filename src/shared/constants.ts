@@ -29,6 +29,10 @@ import {
   Percent,
   BanknoteArrowDownIcon,
   Clock3,
+  LayoutDashboard,
+  Users,
+  TrendingUp,
+  FileText,
 } from "lucide-react";
 import type {
   WalletEntryType,
@@ -68,6 +72,14 @@ export const NAVIGATIONS = [
   { id: "create", icon: Plus, label: "", href: "create" },
   { id: "activity", icon: Bell, label: "Activity", href: "activity" },
   { id: "profile", icon: User, label: "Profile", href: "profile" },
+];
+
+export const ADMIN_NAVIGATIONS = [
+  { id: "overiew", icon: LayoutDashboard, label: "Overview", href: "/admin" },
+  { id: "users", icon: Users, label: "Users", href: "users" },
+  { id: "auctions", icon: Tag, label: "Auctions", href: "auctions" },
+  { id: "revenue", icon: TrendingUp, label: "Revenue", href: "revenue" },
+  { id: "audits", icon: FileText, label: "Audit Log", href: "audits" },
 ];
 
 export const AUCTIONTABS: AuctionListType[] = [

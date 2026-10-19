@@ -23,8 +23,10 @@ function LoginForm() {
     defaultValues: {
       /*  email: "",
       password: "", */
-      email: "seed_u01@yardsale.dev",
-      password: "YardSaleSeed!2026",
+      email: "admin@yardsale.com",
+      password: "Super@yardsale",
+      /* email: "seed_u01@yardsale.dev",
+      password: "YardSaleSeed!2026", */
     },
     resolver: zodResolver(schema),
   });
